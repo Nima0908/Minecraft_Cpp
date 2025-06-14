@@ -1,0 +1,3 @@
+/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles/mc_client.dir
+/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles/edit_cache.dir
+/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles/rebuild_cache.dir
