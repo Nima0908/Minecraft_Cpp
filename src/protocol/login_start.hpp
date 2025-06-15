@@ -3,6 +3,7 @@
 #include "packet.hpp"
 #include "../util/buffer_utils.hpp"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

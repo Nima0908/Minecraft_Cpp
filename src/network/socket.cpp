@@ -1,5 +1,6 @@
 #include "socket.hpp"
 #include "../crypto/aes_cipher.hpp"
+#include "../util/buffer_utils.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -71,6 +72,12 @@ std::string Socket::recvString() {
 std::vector<uint8_t> Socket::recvByteArray() {
     int length = recvVarInt();
     return recv(length);
+}
+
+std::vector<uint8_t> Socket::recvPacket() {
+    int length = recvVarInt();
+    auto packetData = recv(length);
+    return packetData;
 }
 
 }

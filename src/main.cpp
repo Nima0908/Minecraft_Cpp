@@ -1,6 +1,7 @@
 #include "network/socket.hpp"
 #include "protocol/handshake.hpp"
 #include "protocol/login_start.hpp"
+#include "protocol/encryption_request.hpp"
 #include "util/buffer_utils.hpp"
 #include "util/logger.hpp"
 
@@ -25,20 +26,12 @@ int main() {
         socket.connect(address, port);
         mc::log(mc::LogLevel::INFO, "Connection successful");
 
-        mc::HandshakePacket handshake(
-            760,       // Protocol version
-            address,   // Server address
-            port,      // Server port
-            2          // Next state: login
-        );
-        auto handshakeData = handshake.serialize();
-  
-        socket.send(handshakeData);
+        mc::HandshakePacket handshake(760, address, port, 2);
+        socket.send(handshake.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent handshake");
 
         mc::LoginStart loginStart(username);
-        auto loginData = loginStart.serialize();
-        socket.send(loginData);
+        socket.send(loginStart.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent LoginStart with username: " + username);
 
         int packetLength = socket.recvVarInt();
@@ -52,7 +45,15 @@ int main() {
 
         mc::log(mc::LogLevel::INFO, "Received EncryptionRequest – proceeding with encryption (not yet implemented)");
 
-        // TODO: Handle encryption setup here.
+        mc::EncryptionRequest encryptionRequest;
+        encryptionRequest.read(socket);
+
+        mc::log(mc::LogLevel::INFO, "EncryptionRequest received");
+        mc::log(mc::LogLevel::DEBUG, "ServerID: " + encryptionRequest.serverID);
+        mc::log(mc::LogLevel::DEBUG, "PublicKey size: " + std::to_string(encryptionRequest.publicKey.size()));
+        mc::log(mc::LogLevel::DEBUG, "VerifyToken size: " + std::to_string(encryptionRequest.verifyToken.size()));
+
+        // TODO: Implement encryption handshake and session authentication
 
     } catch (const std::exception& e) {
         mc::log(mc::LogLevel::ERROR, std::string("Exception occurred: ") + e.what());
@@ -61,4 +62,3 @@ int main() {
 
     return 0;
 }
-

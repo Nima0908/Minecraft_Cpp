@@ -25,6 +25,7 @@ public:
     int32_t recvVarInt();
     std::string recvString();
     std::vector<uint8_t> recvByteArray();
+    std::vector<uint8_t> recvPacket();
 
 private:
     boost::asio::io_context io_context_;
