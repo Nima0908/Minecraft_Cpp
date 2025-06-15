@@ -455,6 +455,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.o
  /home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.hpp
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/encryption_request.hpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/handshake.hpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/login_start.hpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/packet.hpp
@@ -1589,6 +1590,8 @@ CMakeFiles/mc_client.dir/src/main.cpp.o
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o
  /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.cpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.hpp
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.cpp
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.hpp
  /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp
  /usr/include/alloca.h
  /usr/include/arpa/inet.h

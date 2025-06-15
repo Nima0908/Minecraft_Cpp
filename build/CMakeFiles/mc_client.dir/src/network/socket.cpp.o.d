@@ -1030,4 +1030,5 @@ CMakeFiles/mc_client.dir/src/network/socket.cpp.o: \
  /usr/include/openssl/bnerr.h /usr/include/openssl/objects.h \
  /usr/include/openssl/obj_mac.h /usr/include/openssl/asn1.h \
  /usr/include/openssl/asn1err.h /usr/include/openssl/objectserr.h \
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/network/../util/buffer_utils.hpp \
  /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/iostream

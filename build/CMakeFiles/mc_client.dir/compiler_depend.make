@@ -452,6 +452,7 @@ CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o: /home/marius/Dokumente/Pro
 CMakeFiles/mc_client.dir/src/main.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.hpp \
+  /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/encryption_request.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/handshake.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/login_start.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/packet.hpp \
@@ -1585,6 +1586,8 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: /home/marius/Dokumente/Projects/Minecra
 
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.cpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.hpp \
+  /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.cpp \
+  /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp \
   /usr/include/alloca.h \
   /usr/include/arpa/inet.h \
@@ -3068,6 +3071,8 @@ CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/bits/hashtable.h:
 
+/usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/bits/enable_special_members.h:
+
 /usr/include/boost/asio/detail/timer_queue_set.hpp:
 
 /usr/include/bits/types/error_t.h:
@@ -3211,10 +3216,6 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 /usr/include/boost/asio/detail/is_buffer_sequence.hpp:
 
 /usr/include/boost/asio/detail/event.hpp:
-
-/usr/include/bits/termios-c_cc.h:
-
-/usr/include/boost/asio/detail/epoll_reactor.hpp:
 
 /usr/include/bits/poll.h:
 
@@ -3514,9 +3515,9 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 
 /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.cpp:
 
-/usr/include/boost/asio/detail/impl/reactive_descriptor_service.ipp:
-
 /usr/include/asm/ioctl.h:
+
+/usr/include/boost/asio/detail/impl/reactive_descriptor_service.ipp:
 
 /usr/include/boost/type_traits/is_base_and_derived.hpp:
 
@@ -3535,10 +3536,6 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 /usr/include/boost/smart_ptr/bad_weak_ptr.hpp:
 
 /usr/include/sys/cdefs.h:
-
-/usr/include/boost/asio/detail/timer_scheduler.hpp:
-
-/usr/include/boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_common.hpp:
 
 /usr/include/boost/date_time/period.hpp:
 
@@ -3867,6 +3864,14 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 /usr/include/boost/asio/buffered_stream_fwd.hpp:
 
 /usr/include/netdb.h:
+
+/usr/include/boost/asio/detail/epoll_reactor.hpp:
+
+/usr/include/bits/termios-c_cc.h:
+
+/usr/include/boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_common.hpp:
+
+/usr/include/boost/asio/detail/timer_scheduler.hpp:
 
 /usr/include/boost/asio/detail/cstdint.hpp:
 
@@ -4473,6 +4478,8 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/cstdint:
 
 /usr/include/boost/preprocessor/comparison/equal.hpp:
+
+/home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/encryption_request.hpp:
 
 /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/handshake.hpp:
 
@@ -5351,5 +5358,3 @@ CMakeFiles/mc_client.dir/src/main.cpp.o:
 /usr/include/bits/types/clockid_t.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/bits/allocated_ptr.h:
-
-/usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/bits/enable_special_members.h:
