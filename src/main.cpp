@@ -26,7 +26,7 @@ int main() {
         socket.connect(address, port);
         mc::log(mc::LogLevel::INFO, "Connection successful");
 
-        mc::HandshakePacket handshake(760, address, port, 2);
+        mc::HandshakePacket handshake(760, address, port, 1);
         socket.send(handshake.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent handshake");
 

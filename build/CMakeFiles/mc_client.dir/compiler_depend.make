@@ -1586,7 +1586,6 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: /home/marius/Dokumente/Projects/Minecra
 
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.cpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.hpp \
-  /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.cpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.hpp \
   /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp \
   /usr/include/alloca.h \

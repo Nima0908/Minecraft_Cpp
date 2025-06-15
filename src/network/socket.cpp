@@ -74,10 +74,4 @@ std::vector<uint8_t> Socket::recvByteArray() {
     return recv(length);
 }
 
-std::vector<uint8_t> Socket::recvPacket() {
-    int length = recvVarInt();
-    auto packetData = recv(length);
-    return packetData;
-}
-
 }

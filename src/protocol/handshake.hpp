@@ -27,8 +27,12 @@ public:
         appendString(data, serverAddress);
         appendUInt16(data, serverPort);
         appendVarInt(data, nextState);
+        
+        std::vector<uint8_t> fullPacket;
+        appendVarInt(fullPacket, static_cast<int32_t>(data.size())); // Add length prefix
+        fullPacket.insert(fullPacket.end(), data.begin(), data.end()); // Append body
 
-        return data;
+    return fullPacket;
     }
 };
 
