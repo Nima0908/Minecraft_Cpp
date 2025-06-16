@@ -19,6 +19,10 @@ public:
         return 0x00;
     }
 
+    PacketDirection getDirection() const override {
+        return mc::PacketDirection::Serverbound;
+    }
+
     std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> data;
 

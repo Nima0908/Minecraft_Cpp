@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/marius/Dokumente/Projects/Minecraft_C++/build/_deps/json-src/include
 
 CXX_FLAGS = -std=gnu++17
 

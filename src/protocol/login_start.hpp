@@ -18,10 +18,17 @@ public:
         return 0x00;
     }
 
+    PacketDirection getDirection() const override {
+        return mc::PacketDirection::Serverbound;
+    } 
+
     std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> data;
         appendVarInt(data, getPacketID());
         appendString(data, username);
+
+        std::vector<uint8_t> zeroUUID(16, 0);
+        data.insert(data.end(), zeroUUID.begin(), zeroUUID.end());
 
         std::vector<uint8_t> fullPacket;
         appendVarInt(fullPacket, static_cast<int32_t>(data.size())); // Add length prefix

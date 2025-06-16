@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/mc_client.dir/link.d"
+  "CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o"
+  "CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o.d"
+  "CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o"
+  "CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o.d"
   "CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o"
   "CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o.d"
   "CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o"

@@ -64,19 +64,41 @@ CMAKE_BINARY_DIR = /home/marius/Dokumente/Projects/Minecraft_C++/build
 
 # The main recursive "all" target.
 all: CMakeFiles/mc_client.dir/all
+all: _deps/json-build/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/mc_client.dir/codegen
+codegen: _deps/json-build/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: _deps/json-build/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/mc_client.dir/clean
+clean: _deps/json-build/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory _deps/json-build
+
+# Recursive "all" directory target.
+_deps/json-build/all:
+.PHONY : _deps/json-build/all
+
+# Recursive "codegen" directory target.
+_deps/json-build/codegen:
+.PHONY : _deps/json-build/codegen
+
+# Recursive "preinstall" directory target.
+_deps/json-build/preinstall:
+.PHONY : _deps/json-build/preinstall
+
+# Recursive "clean" directory target.
+_deps/json-build/clean:
+.PHONY : _deps/json-build/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/mc_client.dir
@@ -85,12 +107,12 @@ clean: CMakeFiles/mc_client.dir/clean
 CMakeFiles/mc_client.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target mc_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target mc_client"
 .PHONY : CMakeFiles/mc_client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mc_client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mc_client.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles 0
 .PHONY : CMakeFiles/mc_client.dir/rule
@@ -102,7 +124,7 @@ mc_client: CMakeFiles/mc_client.dir/rule
 # codegen rule for target.
 CMakeFiles/mc_client.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Finished codegen for target mc_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Finished codegen for target mc_client"
 .PHONY : CMakeFiles/mc_client.dir/codegen
 
 # clean rule for target.

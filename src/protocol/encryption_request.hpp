@@ -25,6 +25,10 @@ public:
         return 0x01;
     }
 
+    PacketDirection getDirection() const override {
+      return mc::PacketDirection::Clientbound;
+    }
+
     // Custom deserialization from live socket
     void read(Socket& socket) {
         serverID = socket.recvString();

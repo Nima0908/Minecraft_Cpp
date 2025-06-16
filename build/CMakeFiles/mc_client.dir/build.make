@@ -72,10 +72,38 @@ include CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/codegen:
 .PHONY : CMakeFiles/mc_client.dir/codegen
 
+CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o: CMakeFiles/mc_client.dir/flags.make
+CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp
+CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o -MF CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o.d -o CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp
+
+CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp > CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.i
+
+CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp -o CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.s
+
+CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o: CMakeFiles/mc_client.dir/flags.make
+CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp
+CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o -MF CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o.d -o CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp
+
+CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp > CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.i
+
+CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp -o CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.s
+
 CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.cpp
 CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o -MF CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o.d -o CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.cpp
 
 CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.i: cmake_force
@@ -89,7 +117,7 @@ CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.s: cmake_force
 CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o: CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/encryption.cpp
 CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o -MF CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o.d -o CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/encryption.cpp
 
 CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.i: cmake_force
@@ -103,7 +131,7 @@ CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.s: cmake_force
 CMakeFiles/mc_client.dir/src/main.cpp.o: CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/src/main.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp
 CMakeFiles/mc_client.dir/src/main.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mc_client.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/mc_client.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/main.cpp.o -MF CMakeFiles/mc_client.dir/src/main.cpp.o.d -o CMakeFiles/mc_client.dir/src/main.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp
 
 CMakeFiles/mc_client.dir/src/main.cpp.i: cmake_force
@@ -117,7 +145,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.s: cmake_force
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o: CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.cpp
 CMakeFiles/mc_client.dir/src/network/socket.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/mc_client.dir/src/network/socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/mc_client.dir/src/network/socket.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/network/socket.cpp.o -MF CMakeFiles/mc_client.dir/src/network/socket.cpp.o.d -o CMakeFiles/mc_client.dir/src/network/socket.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.cpp
 
 CMakeFiles/mc_client.dir/src/network/socket.cpp.i: cmake_force
@@ -131,7 +159,7 @@ CMakeFiles/mc_client.dir/src/network/socket.cpp.s: cmake_force
 CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o: CMakeFiles/mc_client.dir/flags.make
 CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o: /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.cpp
 CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o: CMakeFiles/mc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o -MF CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o.d -o CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.o -c /home/marius/Dokumente/Projects/Minecraft_C++/src/util/buffer_utils.cpp
 
 CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.i: cmake_force
@@ -144,6 +172,8 @@ CMakeFiles/mc_client.dir/src/util/buffer_utils.cpp.s: cmake_force
 
 # Object files for target mc_client
 mc_client_OBJECTS = \
+"CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o" \
+"CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o" \
 "CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o" \
 "CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o" \
 "CMakeFiles/mc_client.dir/src/main.cpp.o" \
@@ -153,6 +183,8 @@ mc_client_OBJECTS = \
 # External object files for target mc_client
 mc_client_EXTERNAL_OBJECTS =
 
+mc_client: CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o
+mc_client: CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o
 mc_client: CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o
 mc_client: CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o
 mc_client: CMakeFiles/mc_client.dir/src/main.cpp.o
@@ -163,8 +195,9 @@ mc_client: CMakeFiles/mc_client.dir/compiler_depend.ts
 mc_client: /usr/lib64/libboost_system.so.1.85.0
 mc_client: /usr/lib64/libssl.so
 mc_client: /usr/lib64/libcrypto.so
+mc_client: /usr/lib64/libcurl.so
 mc_client: CMakeFiles/mc_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable mc_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/marius/Dokumente/Projects/Minecraft_C++/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable mc_client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mc_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

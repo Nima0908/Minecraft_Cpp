@@ -130,6 +130,54 @@ mc_client/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/build
 .PHONY : mc_client/fast
 
+src/authenticate/device_code.o: src/authenticate/device_code.cpp.o
+.PHONY : src/authenticate/device_code.o
+
+# target to build an object file
+src/authenticate/device_code.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o
+.PHONY : src/authenticate/device_code.cpp.o
+
+src/authenticate/device_code.i: src/authenticate/device_code.cpp.i
+.PHONY : src/authenticate/device_code.i
+
+# target to preprocess a source file
+src/authenticate/device_code.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.i
+.PHONY : src/authenticate/device_code.cpp.i
+
+src/authenticate/device_code.s: src/authenticate/device_code.cpp.s
+.PHONY : src/authenticate/device_code.s
+
+# target to generate assembly for a file
+src/authenticate/device_code.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.s
+.PHONY : src/authenticate/device_code.cpp.s
+
+src/authenticate/token_poll.o: src/authenticate/token_poll.cpp.o
+.PHONY : src/authenticate/token_poll.o
+
+# target to build an object file
+src/authenticate/token_poll.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o
+.PHONY : src/authenticate/token_poll.cpp.o
+
+src/authenticate/token_poll.i: src/authenticate/token_poll.cpp.i
+.PHONY : src/authenticate/token_poll.i
+
+# target to preprocess a source file
+src/authenticate/token_poll.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.i
+.PHONY : src/authenticate/token_poll.cpp.i
+
+src/authenticate/token_poll.s: src/authenticate/token_poll.cpp.s
+.PHONY : src/authenticate/token_poll.s
+
+# target to generate assembly for a file
+src/authenticate/token_poll.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.s
+.PHONY : src/authenticate/token_poll.cpp.s
+
 src/crypto/aes_cipher.o: src/crypto/aes_cipher.cpp.o
 .PHONY : src/crypto/aes_cipher.o
 
@@ -259,6 +307,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... mc_client"
+	@echo "... src/authenticate/device_code.o"
+	@echo "... src/authenticate/device_code.i"
+	@echo "... src/authenticate/device_code.s"
+	@echo "... src/authenticate/token_poll.o"
+	@echo "... src/authenticate/token_poll.i"
+	@echo "... src/authenticate/token_poll.s"
 	@echo "... src/crypto/aes_cipher.o"
 	@echo "... src/crypto/aes_cipher.i"
 	@echo "... src/crypto/aes_cipher.s"

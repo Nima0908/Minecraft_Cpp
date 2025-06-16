@@ -2,14 +2,18 @@
 #include "protocol/handshake.hpp"
 #include "protocol/login_start.hpp"
 #include "protocol/encryption_request.hpp"
+#include "protocol/login_disconnect.hpp"
 #include "util/buffer_utils.hpp"
 #include "util/logger.hpp"
+
+#include "authenticate/device_code.hpp"
+#include "authenticate/token_poll.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-int main() {
+/* int main() {
     mc::Socket socket;
 
     std::string address;
@@ -26,22 +30,40 @@ int main() {
         socket.connect(address, port);
         mc::log(mc::LogLevel::INFO, "Connection successful");
 
-        mc::HandshakePacket handshake(760, address, port, 1);
+        mc::HandshakePacket handshake(770, address, port, 2);
         socket.send(handshake.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent handshake");
 
         mc::LoginStart loginStart(username);
         socket.send(loginStart.serialize());
+
+        std::vector<uint8_t> loginPacket = loginStart.serialize();
+        std::cout << "LoginStart packet (hex): ";
+        for (uint8_t byte : loginPacket) {
+            printf("%02X ", byte);
+        }
+
+        std::cout << std::endl;
+
+
         mc::log(mc::LogLevel::DEBUG, "Sent LoginStart with username: " + username);
 
         int packetLength = socket.recvVarInt();
         int packetId = socket.recvVarInt();
         mc::log(mc::LogLevel::DEBUG, "Received packet ID: " + std::to_string(packetId));
 
-        if (packetId != 0x01) {
-            mc::log(mc::LogLevel::ERROR, "Expected EncryptionRequest (0x01), got: " + std::to_string(packetId));
-            return 1;
+        if (packetId == 0x00) {
+          mc::LoginDisconnect disconnect;
+          disconnect.read(socket);
+          mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+          return 1;
         }
+
+        if (packetId != 0x01) {
+          mc::log(mc::LogLevel::ERROR, "Expected EncryptionRequest (0x01), got: " + std::to_string(packetId));
+          return 1;
+        }
+ 
 
         mc::log(mc::LogLevel::INFO, "Received EncryptionRequest – proceeding with encryption (not yet implemented)");
 
@@ -61,4 +83,26 @@ int main() {
     }
 
     return 0;
+} */
+
+
+int main() {
+    const std::string CLIENT_ID = ":()";
+    try {
+        auto codeRes = mc::auth::requestDeviceCode(CLIENT_ID);
+        std::cout << "Go to " << codeRes.verification_uri
+                  << " and enter code: " << codeRes.user_code << std::endl;
+
+        auto tokenRes = mc::auth::pollForToken(
+            CLIENT_ID, codeRes.device_code, codeRes.interval);
+
+        std::cout << "Access Token: " << tokenRes.access_token << "\n";
+        // Save refresh_token if needed: tokenRes.refresh_token
+
+        // Now proceed with Xbox/XSTS/Minecraft login and your session join flow...
+    } catch (const std::exception& e) {
+        std::cerr << "Authentication error: " << e.what() << std::endl;
+        return 1;
+    }
 }
+
