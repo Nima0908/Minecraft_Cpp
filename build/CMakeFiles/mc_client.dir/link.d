@@ -2,8 +2,12 @@ mc_client: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14/../../../../lib64/Scrt1.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/14/crtbeginS.o \
-  CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o \
-  CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/http.cpp.o \
+  CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.o \
   CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o \
   CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o \
   CMakeFiles/mc_client.dir/src/main.cpp.o \
@@ -54,9 +58,17 @@ mc_client: \
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/14/crtbeginS.o:
 
-CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o:
+CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.o:
 
-CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o:
+CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.o:
+
+CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.o:
+
+CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.o:
+
+CMakeFiles/mc_client.dir/src/authenticate/http.cpp.o:
+
+CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.o:
 
 CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o:
 

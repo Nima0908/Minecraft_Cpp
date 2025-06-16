@@ -8,8 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp" "CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o.d"
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp" "CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_device_code.cpp" "CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_minecraft.cpp" "CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xbl.cpp" "CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xsts.cpp" "CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/http.cpp" "CMakeFiles/mc_client.dir/src/authenticate/http.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/http.cpp.o.d"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_cache.cpp" "CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.o.d"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.cpp" "CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o.d"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/encryption.cpp" "CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/crypto/encryption.cpp.o.d"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp" "CMakeFiles/mc_client.dir/src/main.cpp.o" "gcc" "CMakeFiles/mc_client.dir/src/main.cpp.o.d"

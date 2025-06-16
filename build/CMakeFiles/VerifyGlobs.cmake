@@ -5,8 +5,12 @@ cmake_policy(SET CMP0009 NEW)
 # SOURCES at CMakeLists.txt:25 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/marius/Dokumente/Projects/Minecraft_C++/src/*.cpp")
 set(OLD_GLOB
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.cpp"
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_device_code.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_minecraft.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xbl.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xsts.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/http.cpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_cache.cpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.cpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/encryption.cpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/main.cpp"
@@ -21,8 +25,12 @@ endif()
 # SOURCES at CMakeLists.txt:25 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/marius/Dokumente/Projects/Minecraft_C++/src/*.hpp")
 set(OLD_GLOB
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.hpp"
-  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_device_code.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_minecraft.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xbl.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xsts.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/http.hpp"
+  "/home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_cache.hpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/aes_cipher.hpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/crypto/encryption.hpp"
   "/home/marius/Dokumente/Projects/Minecraft_C++/src/network/socket.hpp"

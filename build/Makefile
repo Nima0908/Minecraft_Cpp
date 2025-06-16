@@ -130,53 +130,149 @@ mc_client/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/build
 .PHONY : mc_client/fast
 
-src/authenticate/device_code.o: src/authenticate/device_code.cpp.o
-.PHONY : src/authenticate/device_code.o
+src/authenticate/auth_device_code.o: src/authenticate/auth_device_code.cpp.o
+.PHONY : src/authenticate/auth_device_code.o
 
 # target to build an object file
-src/authenticate/device_code.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.o
-.PHONY : src/authenticate/device_code.cpp.o
+src/authenticate/auth_device_code.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.o
+.PHONY : src/authenticate/auth_device_code.cpp.o
 
-src/authenticate/device_code.i: src/authenticate/device_code.cpp.i
-.PHONY : src/authenticate/device_code.i
+src/authenticate/auth_device_code.i: src/authenticate/auth_device_code.cpp.i
+.PHONY : src/authenticate/auth_device_code.i
 
 # target to preprocess a source file
-src/authenticate/device_code.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.i
-.PHONY : src/authenticate/device_code.cpp.i
+src/authenticate/auth_device_code.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.i
+.PHONY : src/authenticate/auth_device_code.cpp.i
 
-src/authenticate/device_code.s: src/authenticate/device_code.cpp.s
-.PHONY : src/authenticate/device_code.s
+src/authenticate/auth_device_code.s: src/authenticate/auth_device_code.cpp.s
+.PHONY : src/authenticate/auth_device_code.s
 
 # target to generate assembly for a file
-src/authenticate/device_code.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/device_code.cpp.s
-.PHONY : src/authenticate/device_code.cpp.s
+src/authenticate/auth_device_code.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_device_code.cpp.s
+.PHONY : src/authenticate/auth_device_code.cpp.s
 
-src/authenticate/token_poll.o: src/authenticate/token_poll.cpp.o
-.PHONY : src/authenticate/token_poll.o
+src/authenticate/auth_minecraft.o: src/authenticate/auth_minecraft.cpp.o
+.PHONY : src/authenticate/auth_minecraft.o
 
 # target to build an object file
-src/authenticate/token_poll.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.o
-.PHONY : src/authenticate/token_poll.cpp.o
+src/authenticate/auth_minecraft.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.o
+.PHONY : src/authenticate/auth_minecraft.cpp.o
 
-src/authenticate/token_poll.i: src/authenticate/token_poll.cpp.i
-.PHONY : src/authenticate/token_poll.i
+src/authenticate/auth_minecraft.i: src/authenticate/auth_minecraft.cpp.i
+.PHONY : src/authenticate/auth_minecraft.i
 
 # target to preprocess a source file
-src/authenticate/token_poll.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.i
-.PHONY : src/authenticate/token_poll.cpp.i
+src/authenticate/auth_minecraft.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.i
+.PHONY : src/authenticate/auth_minecraft.cpp.i
 
-src/authenticate/token_poll.s: src/authenticate/token_poll.cpp.s
-.PHONY : src/authenticate/token_poll.s
+src/authenticate/auth_minecraft.s: src/authenticate/auth_minecraft.cpp.s
+.PHONY : src/authenticate/auth_minecraft.s
 
 # target to generate assembly for a file
-src/authenticate/token_poll.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_poll.cpp.s
-.PHONY : src/authenticate/token_poll.cpp.s
+src/authenticate/auth_minecraft.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_minecraft.cpp.s
+.PHONY : src/authenticate/auth_minecraft.cpp.s
+
+src/authenticate/auth_xbl.o: src/authenticate/auth_xbl.cpp.o
+.PHONY : src/authenticate/auth_xbl.o
+
+# target to build an object file
+src/authenticate/auth_xbl.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.o
+.PHONY : src/authenticate/auth_xbl.cpp.o
+
+src/authenticate/auth_xbl.i: src/authenticate/auth_xbl.cpp.i
+.PHONY : src/authenticate/auth_xbl.i
+
+# target to preprocess a source file
+src/authenticate/auth_xbl.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.i
+.PHONY : src/authenticate/auth_xbl.cpp.i
+
+src/authenticate/auth_xbl.s: src/authenticate/auth_xbl.cpp.s
+.PHONY : src/authenticate/auth_xbl.s
+
+# target to generate assembly for a file
+src/authenticate/auth_xbl.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xbl.cpp.s
+.PHONY : src/authenticate/auth_xbl.cpp.s
+
+src/authenticate/auth_xsts.o: src/authenticate/auth_xsts.cpp.o
+.PHONY : src/authenticate/auth_xsts.o
+
+# target to build an object file
+src/authenticate/auth_xsts.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.o
+.PHONY : src/authenticate/auth_xsts.cpp.o
+
+src/authenticate/auth_xsts.i: src/authenticate/auth_xsts.cpp.i
+.PHONY : src/authenticate/auth_xsts.i
+
+# target to preprocess a source file
+src/authenticate/auth_xsts.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.i
+.PHONY : src/authenticate/auth_xsts.cpp.i
+
+src/authenticate/auth_xsts.s: src/authenticate/auth_xsts.cpp.s
+.PHONY : src/authenticate/auth_xsts.s
+
+# target to generate assembly for a file
+src/authenticate/auth_xsts.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/auth_xsts.cpp.s
+.PHONY : src/authenticate/auth_xsts.cpp.s
+
+src/authenticate/http.o: src/authenticate/http.cpp.o
+.PHONY : src/authenticate/http.o
+
+# target to build an object file
+src/authenticate/http.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/http.cpp.o
+.PHONY : src/authenticate/http.cpp.o
+
+src/authenticate/http.i: src/authenticate/http.cpp.i
+.PHONY : src/authenticate/http.i
+
+# target to preprocess a source file
+src/authenticate/http.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/http.cpp.i
+.PHONY : src/authenticate/http.cpp.i
+
+src/authenticate/http.s: src/authenticate/http.cpp.s
+.PHONY : src/authenticate/http.s
+
+# target to generate assembly for a file
+src/authenticate/http.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/http.cpp.s
+.PHONY : src/authenticate/http.cpp.s
+
+src/authenticate/token_cache.o: src/authenticate/token_cache.cpp.o
+.PHONY : src/authenticate/token_cache.o
+
+# target to build an object file
+src/authenticate/token_cache.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.o
+.PHONY : src/authenticate/token_cache.cpp.o
+
+src/authenticate/token_cache.i: src/authenticate/token_cache.cpp.i
+.PHONY : src/authenticate/token_cache.i
+
+# target to preprocess a source file
+src/authenticate/token_cache.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.i
+.PHONY : src/authenticate/token_cache.cpp.i
+
+src/authenticate/token_cache.s: src/authenticate/token_cache.cpp.s
+.PHONY : src/authenticate/token_cache.s
+
+# target to generate assembly for a file
+src/authenticate/token_cache.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mc_client.dir/build.make CMakeFiles/mc_client.dir/src/authenticate/token_cache.cpp.s
+.PHONY : src/authenticate/token_cache.cpp.s
 
 src/crypto/aes_cipher.o: src/crypto/aes_cipher.cpp.o
 .PHONY : src/crypto/aes_cipher.o
@@ -307,12 +403,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... mc_client"
-	@echo "... src/authenticate/device_code.o"
-	@echo "... src/authenticate/device_code.i"
-	@echo "... src/authenticate/device_code.s"
-	@echo "... src/authenticate/token_poll.o"
-	@echo "... src/authenticate/token_poll.i"
-	@echo "... src/authenticate/token_poll.s"
+	@echo "... src/authenticate/auth_device_code.o"
+	@echo "... src/authenticate/auth_device_code.i"
+	@echo "... src/authenticate/auth_device_code.s"
+	@echo "... src/authenticate/auth_minecraft.o"
+	@echo "... src/authenticate/auth_minecraft.i"
+	@echo "... src/authenticate/auth_minecraft.s"
+	@echo "... src/authenticate/auth_xbl.o"
+	@echo "... src/authenticate/auth_xbl.i"
+	@echo "... src/authenticate/auth_xbl.s"
+	@echo "... src/authenticate/auth_xsts.o"
+	@echo "... src/authenticate/auth_xsts.i"
+	@echo "... src/authenticate/auth_xsts.s"
+	@echo "... src/authenticate/http.o"
+	@echo "... src/authenticate/http.i"
+	@echo "... src/authenticate/http.s"
+	@echo "... src/authenticate/token_cache.o"
+	@echo "... src/authenticate/token_cache.i"
+	@echo "... src/authenticate/token_cache.s"
 	@echo "... src/crypto/aes_cipher.o"
 	@echo "... src/crypto/aes_cipher.i"
 	@echo "... src/crypto/aes_cipher.s"

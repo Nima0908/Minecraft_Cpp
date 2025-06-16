@@ -6,9 +6,6 @@
 #include "util/buffer_utils.hpp"
 #include "util/logger.hpp"
 
-#include "authenticate/device_code.hpp"
-#include "authenticate/token_poll.hpp"
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -85,24 +82,91 @@
     return 0;
 } */
 
+#include <iostream>
+#include "authenticate/auth_device_code.hpp"
+#include "authenticate/auth_xbl.hpp"
+#include "authenticate/auth_xsts.hpp"
+#include "authenticate/auth_minecraft.hpp"
+#include "authenticate/token_cache.hpp"
+#include "util/logger.hpp"
 
 int main() {
-    const std::string CLIENT_ID = ":()";
+    const std::string clientId = "757bb3b3-b7ca-4bcd-a160-c92e6379c263";
+
+    const std::string msTokenFile = "ms_access_token.txt";
+    const std::string xblTokenFile = "xbl_token.txt";
+    const std::string xstsTokenFile = "xsts_token.txt";
+    const std::string mcTokenFile = "mc_access_token.txt";
+    const std::string userhashFile = "userhash.txt";
+
     try {
-        auto codeRes = mc::auth::requestDeviceCode(CLIENT_ID);
-        std::cout << "Go to " << codeRes.verification_uri
-                  << " and enter code: " << codeRes.user_code << std::endl;
+        // Microsoft token
+        auto msTokenOpt = loadToken(msTokenFile);
+        std::string msToken;
+        if (!msTokenOpt) {
+            auto deviceCodeResp = requestDeviceCode(clientId);
+            mc::log(mc::LogLevel::DEBUG, 
+                "Visit " + deviceCodeResp.verification_uri + " and enter code: " + deviceCodeResp.user_code);
 
-        auto tokenRes = mc::auth::pollForToken(
-            CLIENT_ID, codeRes.device_code, codeRes.interval);
+            msToken = pollToken(clientId, deviceCodeResp.device_code, deviceCodeResp.interval);
+            saveToken(msTokenFile, msToken);
+            mc::log(mc::LogLevel::INFO, "Microsoft access token saved.");
+        } else {
+            msToken = *msTokenOpt;
+            mc::log(mc::LogLevel::INFO, "Loaded Microsoft access token from cache.");
+        }
 
-        std::cout << "Access Token: " << tokenRes.access_token << "\n";
-        // Save refresh_token if needed: tokenRes.refresh_token
+        // XBL token + userhash
+        auto xblTokenOpt = loadToken(xblTokenFile);
+        auto userhashOpt = loadToken(userhashFile);
+        std::string xblToken, userhash;
 
-        // Now proceed with Xbox/XSTS/Minecraft login and your session join flow...
+        if (!xblTokenOpt || !userhashOpt) {
+            auto xblResp = authenticateWithXBL(msToken);
+            xblToken = xblResp.token;
+            userhash = xblResp.userhash;
+            saveToken(xblTokenFile, xblToken);
+            saveToken(userhashFile, userhash);
+            mc::log(mc::LogLevel::INFO, "XBL token and userhash saved.");
+        } else {
+            xblToken = *xblTokenOpt;
+            userhash = *userhashOpt;
+            mc::log(mc::LogLevel::INFO, "Loaded XBL token and userhash from cache.");
+        }
+
+        // XSTS token
+        auto xstsTokenOpt = loadToken(xstsTokenFile);
+        std::string xstsToken;
+        if (!xstsTokenOpt) {
+            auto xstsResp = getXSTSToken(xblToken);
+            xstsToken = xstsResp.token;
+            saveToken(xstsTokenFile, xstsToken);
+            mc::log(mc::LogLevel::INFO, "XSTS token saved.");
+        } else {
+            xstsToken = *xstsTokenOpt;
+            mc::log(mc::LogLevel::INFO, "Loaded XSTS token from cache.");
+        }
+
+        // Minecraft access token
+        auto mcTokenOpt = loadToken(mcTokenFile);
+        std::string mcToken;
+        if (!mcTokenOpt) {
+            auto mcResp = loginWithMinecraft(userhash, xstsToken);
+            mcToken = mcResp.access_token;
+            saveToken(mcTokenFile, mcToken);
+            mc::log(mc::LogLevel::INFO, "Minecraft access token saved.");
+        } else {
+            mcToken = *mcTokenOpt;
+            mc::log(mc::LogLevel::INFO, "Loaded Minecraft access token from cache.");
+        }
+
+        // Check ownership
+        bool owns = checkMinecraftOwnership(mcToken);
+        mc::log(mc::LogLevel::INFO, std::string("Minecraft ownership: ") + (owns ? "Yes" : "No"));
+
     } catch (const std::exception& e) {
-        std::cerr << "Authentication error: " << e.what() << std::endl;
-        return 1;
+        mc::log(mc::LogLevel::ERROR, std::string("Error: ") + e.what());
     }
-}
 
+    return 0;
+}

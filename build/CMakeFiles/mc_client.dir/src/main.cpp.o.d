@@ -1022,5 +1022,9 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
  /home/marius/Dokumente/Projects/Minecraft_C++/src/protocol/login_disconnect.hpp \
  /home/marius/Dokumente/Projects/Minecraft_C++/src/util/logger.hpp \
  /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/iostream \
- /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/device_code.hpp \
- /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_poll.hpp
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_device_code.hpp \
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xbl.hpp \
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_xsts.hpp \
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/auth_minecraft.hpp \
+ /home/marius/Dokumente/Projects/Minecraft_C++/src/authenticate/token_cache.hpp \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/optional
