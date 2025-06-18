@@ -22,6 +22,7 @@ void appendString(std::vector<uint8_t>& buffer, const std::string& str) {
     appendVarInt(buffer, str.size());
     buffer.insert(buffer.end(), str.begin(), str.end());
 }
+
 void appendByteArray(std::vector<uint8_t>& buffer, const std::vector<uint8_t>& bytes) {
     appendVarInt(buffer, static_cast<int>(bytes.size()));
     buffer.insert(buffer.end(), bytes.begin(), bytes.end());
