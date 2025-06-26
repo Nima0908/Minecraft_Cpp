@@ -1,8 +1,8 @@
 #pragma once
 
-#include "packet.hpp"
-#include "../util/buffer_utils.hpp"
-#include "../network/socket.hpp"
+#include "../packet.hpp"
+#include "../../util/buffer_utils.hpp"
+#include "../../network/socket.hpp"
 #include <string>
 #include <vector>
 

@@ -3,6 +3,7 @@
 #include "../util/buffer_utils.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <deque>  // ensure this is included
 
 namespace mc {
 
@@ -26,42 +27,63 @@ void Socket::connect(const std::string& host, int port) {
 
 void Socket::enableEncryption(std::shared_ptr<AESCipher> cipher) {
     cipher_ = cipher;
-    encryptionEnabled_ = true;  // Add this flag!
+    encryptionEnabled_ = true;
     std::cout << "[DEBUG] Encryption enabled\n";
 }
 
+// Buffered send
 void Socket::send(const std::vector<uint8_t>& data) {
     std::vector<uint8_t> output = (encryptionEnabled_ && cipher_) ? cipher_->encrypt(data) : data;
     boost::asio::write(socket_, boost::asio::buffer(output));
 }
 
-std::vector<uint8_t> Socket::recv(std::size_t length) {
-    std::vector<uint8_t> buffer(length);
-    boost::asio::read(socket_, boost::asio::buffer(buffer));
-    
-    if (encryptionEnabled_ && cipher_) {
-        return cipher_->decrypt(buffer);
+// Buffered + decrypted read into internal buffer
+uint8_t Socket::recvByte() {
+    while (decryptedBuffer_.empty()) {
+        std::array<uint8_t, 512> encrypted;
+        boost::system::error_code ec;
+        std::size_t len = socket_.read_some(boost::asio::buffer(encrypted), ec);
+
+        if (ec) {
+            throw std::runtime_error("read: " + ec.message());
+        }
+
+        std::vector<uint8_t> encryptedVec(encrypted.begin(), encrypted.begin() + len);
+        std::vector<uint8_t> decrypted = encryptionEnabled_ && cipher_
+            ? cipher_->decrypt(encryptedVec)
+            : encryptedVec;
+
+        decryptedBuffer_.insert(decryptedBuffer_.end(), decrypted.begin(), decrypted.end());
     }
-    return buffer;
+
+    uint8_t byte = decryptedBuffer_.front();
+    decryptedBuffer_.pop_front();
+    return byte;
 }
 
-uint8_t Socket::recvByte() {
-    auto bytes = recv(1);
-    return bytes[0];
+std::vector<uint8_t> Socket::recv(std::size_t length) {
+    std::vector<uint8_t> output;
+    while (output.size() < length) {
+        output.push_back(recvByte());
+    }
+    return output;
 }
 
 int32_t Socket::recvVarInt() {
     int32_t result = 0;
     int numRead = 0;
     uint8_t byte;
+
     do {
         byte = recvByte();
         result |= (byte & 0x7F) << (7 * numRead);
+
         numRead++;
         if (numRead > 5) {
             throw std::runtime_error("VarInt is too big");
         }
     } while (byte & 0x80);
+
     return result;
 }
 

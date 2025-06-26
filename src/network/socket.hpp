@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <deque>
 
 namespace mc {
 
@@ -14,6 +15,8 @@ public:
     Socket();
     ~Socket();
     
+    std::deque<uint8_t> decryptedBuffer_;
+
     void connect(const std::string& host, int port);
     void enableEncryption(std::shared_ptr<AESCipher> cipher);
     

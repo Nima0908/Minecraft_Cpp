@@ -1,7 +1,7 @@
 #pragma once
 
-#include "packet.hpp"
-#include "../util/buffer_utils.hpp"
+#include "../packet.hpp"
+#include "../../util/buffer_utils.hpp"
 #include <vector>
 #include <cstdint>
 
@@ -26,7 +26,12 @@ public:
         appendVarInt(data, getPacketID());
         appendByteArray(data, encryptedSecret_);
         appendByteArray(data, encryptedToken_);
-        return data;
+        
+        std::vector<uint8_t> fullPacket;
+        appendVarInt(fullPacket, static_cast<int32_t>(data.size())); // Add length prefix
+        fullPacket.insert(fullPacket.end(), data.begin(), data.end()); // Append body
+
+        return fullPacket;
     }
 
 private:

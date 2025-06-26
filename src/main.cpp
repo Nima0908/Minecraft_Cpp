@@ -1,11 +1,12 @@
 #include "network/socket.hpp"
-#include "protocol/handshake.hpp"
-#include "protocol/login_start.hpp"
-#include "protocol/encryption_request.hpp"
-#include "protocol/encryption_response.hpp"
-#include "protocol/login_disconnect.hpp"
+#include "protocol/server/handshake.hpp"
+#include "protocol/server/login_start.hpp"
+#include "protocol/client/encryption_request.hpp"
+#include "protocol/server/encryption_response.hpp"
+#include "protocol/client/login_disconnect.hpp"
 #include "util/buffer_utils.hpp"
 #include "util/logger.hpp"
+#include "util/uuid_utils.hpp"
 #include "authenticate/auth_session.hpp"
 #include "crypto/encryption.hpp"
 #include "crypto/aes_cipher.hpp"
@@ -112,8 +113,9 @@ int main() {
         mc::HandshakePacket handshake(770, address, port, 2);
         socket.send(handshake.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent handshake packet");
-
-        mc::LoginStart loginStart(username);
+        
+        std::array<uint8_t, 16> uuidBytes = mc::parseDashlessUUID(minecraftUUID);
+        mc::LoginStart loginStart(username, uuidBytes);
         socket.send(loginStart.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent login start packet with username: " + username);
 
@@ -156,6 +158,7 @@ int main() {
         mc::EncryptionResponse response(encryptedSecret, encryptedToken);
         socket.send(response.serialize());
         socket.enableEncryption(std::make_shared<mc::AESCipher>(sharedSecret));
+      
         mc::log(mc::LogLevel::INFO, "AES encryption activated");
 
     } catch (const std::exception& e) {

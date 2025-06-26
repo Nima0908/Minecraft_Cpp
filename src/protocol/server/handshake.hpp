@@ -1,6 +1,6 @@
 #pragma once
-#include "packet.hpp"
-#include "../util/buffer_utils.hpp"
+#include "../packet.hpp"
+#include "../../util/buffer_utils.hpp"
 #include <string>
 
 namespace mc {
