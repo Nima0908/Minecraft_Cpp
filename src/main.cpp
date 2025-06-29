@@ -4,9 +4,11 @@
 #include "protocol/client/encryption_request.hpp"
 #include "protocol/server/encryption_response.hpp"
 #include "protocol/client/login_disconnect.hpp"
-#include "util/buffer_utils.hpp"
+#include "protocol/client/login_compression.hpp"
+#include "protocol/client/login_finished.hpp"
+#include "util/buffer_util.hpp"
 #include "util/logger.hpp"
-#include "util/uuid_utils.hpp"
+//#include "util/uuid_utils.hpp"
 #include "authenticate/auth_session.hpp"
 #include "crypto/encryption.hpp"
 #include "crypto/aes_cipher.hpp"
@@ -43,10 +45,8 @@ int main() {
             mc::log(mc::LogLevel::DEBUG, "User Code: " + deviceCodeResp.user_code);
             msToken = pollToken(clientId, deviceCodeResp.device_code, deviceCodeResp.interval);
             saveToken(msTokenFile, msToken);
-            mc::log(mc::LogLevel::DEBUG, "MS Token saved");
         } else {
             msToken = *msTokenOpt;
-            mc::log(mc::LogLevel::DEBUG, "Loaded MS Token from cache");
         }
 
         auto xblTokenOpt = loadToken(xblTokenFile);
@@ -57,13 +57,11 @@ int main() {
             auto xblResp = authenticateWithXBL(msToken);
             xblToken = xblResp.token;
             userhash = xblResp.userhash;
-            mc::log(mc::LogLevel::DEBUG, "Authenticated with XBL");
             saveToken(xblTokenFile, xblToken);
             saveToken(userhashFile, userhash);
         } else {
             xblToken = *xblTokenOpt;
             userhash = *userhashOpt;
-            mc::log(mc::LogLevel::DEBUG, "Loaded XBL token and userhash from cache");
         }
 
         auto xstsTokenOpt = loadToken(xstsTokenFile);
@@ -72,10 +70,8 @@ int main() {
             auto xstsResp = getXSTSToken(xblToken);
             xstsToken = xstsResp.token;
             saveToken(xstsTokenFile, xstsToken);
-            mc::log(mc::LogLevel::DEBUG, "Fetched and saved XSTS Token");
         } else {
             xstsToken = *xstsTokenOpt;
-            mc::log(mc::LogLevel::DEBUG, "Loaded XSTS Token from cache");
         }
 
         auto mcTokenOpt = loadToken(mcTokenFile);
@@ -83,10 +79,8 @@ int main() {
             auto mcResp = loginWithMinecraft(userhash, xstsToken);
             mcToken = mcResp.access_token;
             saveToken(mcTokenFile, mcToken);
-            mc::log(mc::LogLevel::DEBUG, "Fetched and saved Minecraft access token");
         } else {
             mcToken = *mcTokenOpt;
-            mc::log(mc::LogLevel::DEBUG, "Loaded Minecraft access token from cache");
         }
 
         minecraftUUID = getMinecraftUUID(mcToken);
@@ -111,22 +105,22 @@ int main() {
         mc::log(mc::LogLevel::DEBUG, "Connected to server " + address);
 
         mc::HandshakePacket handshake(770, address, port, 2);
-        socket.send(handshake.serialize());
+        socket.sendPacket(handshake.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent handshake packet");
-        
+
         std::array<uint8_t, 16> uuidBytes = mc::parseDashlessUUID(minecraftUUID);
         mc::LoginStart loginStart(username, uuidBytes);
-        socket.send(loginStart.serialize());
+        socket.sendPacket(loginStart.serialize());
         mc::log(mc::LogLevel::DEBUG, "Sent login start packet with username: " + username);
 
-        int packetLength = socket.recvVarInt();
-        int packetId = socket.recvVarInt();
-
+        auto loginPacket = socket.recvPacket();
+        mc::BufferUtil reader(loginPacket);
+        int packetId = reader.readVarInt();
         mc::log(mc::LogLevel::DEBUG, "Received packet ID: " + std::to_string(packetId));
 
         if (packetId == 0x00) {
             mc::LoginDisconnect disconnect;
-            disconnect.read(socket);
+            disconnect.reason = reader.readString();
             mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
             return 1;
         }
@@ -137,55 +131,110 @@ int main() {
         }
 
         mc::EncryptionRequest encryptionRequest;
-        encryptionRequest.read(socket);
-        mc::log(mc::LogLevel::DEBUG, "Received encryption request");
+        encryptionRequest.serverID = reader.readString();
+        encryptionRequest.publicKey = reader.readByteArray();
+        encryptionRequest.verifyToken = reader.readByteArray();
+        mc::log(mc::LogLevel::DEBUG, "Parsed encryption request");
 
         auto sharedSecret = mc::encryption::generateSharedSecret();
-        mc::log(mc::LogLevel::DEBUG, "Generated shared secret");
-
         auto encryptedSecret = mc::encryption::rsaEncrypt(sharedSecret, encryptionRequest.publicKey);
-        mc::log(mc::LogLevel::DEBUG, "Encrypted shared secret");
-
         auto encryptedToken = mc::encryption::rsaEncrypt(encryptionRequest.verifyToken, encryptionRequest.publicKey);
-        mc::log(mc::LogLevel::DEBUG, "Encrypted verify token");
-
         std::string serverHash = mc::encryption::computeServerHash(encryptionRequest.serverID, sharedSecret, encryptionRequest.publicKey);
-        mc::log(mc::LogLevel::DEBUG, "Computed server hash: " + serverHash);
 
         sendJoinServerRequest(mcToken, minecraftUUID, serverHash);
-        mc::log(mc::LogLevel::DEBUG, "Sent join server request");
-
         mc::EncryptionResponse response(encryptedSecret, encryptedToken);
-        socket.send(response.serialize());
+        socket.sendPacket(response.serialize());
+
         socket.enableEncryption(std::make_shared<mc::AESCipher>(sharedSecret));
-      
         mc::log(mc::LogLevel::INFO, "AES encryption activated");
+     
+        auto nextPacket = socket.recvPacket();
+        mc::BufferUtil nextReader(nextPacket);
+        int nextPacketId = nextReader.readVarInt();
+        mc::log(mc::LogLevel::DEBUG, "Received packet ID: " + std::to_string(nextPacketId));
+
+        if (nextPacketId == 0x03) {
+            mc::LoginCompression compressionPacket;
+            compressionPacket.threshold = nextReader.readVarInt();
+            mc::log(mc::LogLevel::INFO, "Login compression threshold: " + std::to_string(compressionPacket.threshold));
+            
+            socket.setCompressionThreshold(compressionPacket.threshold);
+            mc::log(mc::LogLevel::INFO, "Compression activated with threshold: " + std::to_string(compressionPacket.threshold));
+
+            auto loginSuccessPacket = socket.recvPacket();
+            mc::BufferUtil successReader(loginSuccessPacket);
+            int successPacketId = successReader.readVarInt();
+            mc::log(mc::LogLevel::DEBUG, "Received packet ID: " + std::to_string(successPacketId));
+
+            if (successPacketId == 0x02) {
+                mc::LoginFinished loginSuccess;
+                std::vector<uint8_t> uuidVector = successReader.readByteArray(); 
+                loginSuccess.username = successReader.readString();
+                
+                int numProperties = successReader.readVarInt();
+                mc::log(mc::LogLevel::DEBUG, "Number of properties: " + std::to_string(numProperties));
+                
+                for (int i = 0; i < numProperties; i++) {
+                    std::string name = successReader.readString();
+                    std::string value = successReader.readString();
+                    bool isSigned = successReader.readByte() != 0;
+                    std::string signature = "";
+                    if (isSigned) {
+                        signature = successReader.readString();
+                    }
+                    mc::log(mc::LogLevel::DEBUG, "Property: " + name + " = " + value + (isSigned ? " (signed)" : ""));
+                }
+
+                std::string uuidStr = mc::formatUUIDFromBytes(uuidVector);
+                mc::log(mc::LogLevel::INFO, "Login successful! UUID: " + uuidStr + ", Username: " + loginSuccess.username);
+                
+            } else if (successPacketId == 0x00) {
+                mc::LoginDisconnect disconnect;
+                disconnect.reason = successReader.readString();
+                mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+                return 1;
+            } else {
+                mc::log(mc::LogLevel::ERROR, "Expected Login Success (0x02), got: " + std::to_string(successPacketId));
+                return 1;
+            }
+
+        } else if (nextPacketId == 0x02) {
+            mc::LoginFinished loginSuccess;
+            std::vector<uint8_t> uuidVector = nextReader.readByteArray(); 
+            loginSuccess.username = nextReader.readString();
+            
+            int numProperties = nextReader.readVarInt();
+            mc::log(mc::LogLevel::DEBUG, "Number of properties: " + std::to_string(numProperties));
+            
+            for (int i = 0; i < numProperties; i++) {
+                std::string name = nextReader.readString();
+                std::string value = nextReader.readString();
+                bool isSigned = nextReader.readByte() != 0;
+                std::string signature = "";
+                if (isSigned) {
+                    signature = nextReader.readString();
+                }
+                mc::log(mc::LogLevel::DEBUG, "Property: " + name + " = " + value + (isSigned ? " (signed)" : ""));
+            }
+
+            std::string uuidStr = mc::formatUUIDFromBytes(uuidVector);
+            mc::log(mc::LogLevel::INFO, "Login successful! UUID: " + uuidStr + ", Username: " + loginSuccess.username);
+            
+        } else if (nextPacketId == 0x00) {
+            mc::LoginDisconnect disconnect;
+            disconnect.reason = nextReader.readString();
+            mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+            return 1;
+        } else {
+            mc::log(mc::LogLevel::ERROR, "Expected Login Compression (0x03) or Login Success (0x02), got: " + std::to_string(nextPacketId));
+            return 1;
+        }
 
     } catch (const std::exception& e) {
         mc::log(mc::LogLevel::ERROR, e.what());
         return 1;
     }
 
-    int loginSuccessLength = socket.recvVarInt();
-    int loginSuccessId = socket.recvVarInt();
-    mc::log(mc::LogLevel::DEBUG, "Received post-encryption packet ID: " + std::to_string(loginSuccessId));
-
-    if (loginSuccessId == 0x00) {
-        mc::LoginDisconnect disconnect;
-        disconnect.read(socket);
-        mc::log(mc::LogLevel::ERROR, "Disconnected after encryption: " + disconnect.reason);
-        return 1;
-    }
-
-    if (loginSuccessId != 0x02) {
-        mc::log(mc::LogLevel::ERROR, "Expected Login Success packet (0x02), got: " + std::to_string(loginSuccessId));
-        return 1;
-    }
-
-    std::string playerUUID = socket.recvString();
-    std::string playerName = socket.recvString();
-
-    mc::log(mc::LogLevel::INFO, "Login successful! UUID: " + playerUUID + ", Name: " + playerName);
-
+    mc::log(mc::LogLevel::INFO, "Successfully logged into the server!");
     return 0;
 }

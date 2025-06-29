@@ -1,12 +1,10 @@
 #pragma once
 
 #include "../packet.hpp"
-#include "../../util/buffer_utils.hpp"
-
-#include <cstdint>
+#include "../../util/buffer_util.hpp"
+#include <array>
 #include <string>
 #include <vector>
-#include <array>
 
 namespace mc {
 
@@ -23,22 +21,17 @@ public:
     }
 
     PacketDirection getDirection() const override {
-        return mc::PacketDirection::Serverbound;
+        return PacketDirection::Serverbound;
     }
 
     std::vector<uint8_t> serialize() const override {
-        std::vector<uint8_t> data;
-        appendVarInt(data, getPacketID());
-        appendString(data, username);
-
-        data.insert(data.end(), uuid.begin(), uuid.end());
-
-        std::vector<uint8_t> fullPacket;
-        appendVarInt(fullPacket, static_cast<int32_t>(data.size())); // Add length prefix
-        fullPacket.insert(fullPacket.end(), data.begin(), data.end()); // Append body
-
-        return fullPacket;
+        BufferUtil buf;
+        buf.writeVarInt(getPacketID());
+        buf.writeString(username);
+        buf.writeBytes(std::vector<uint8_t>(uuid.begin(), uuid.end()));
+        return buf.data();
     }
 };
 
 }
+

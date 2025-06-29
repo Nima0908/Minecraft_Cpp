@@ -1,33 +1,30 @@
 #pragma once
 
 #include "../packet.hpp"
-#include "../../util/buffer_util.hpp"
 #include "../../network/socket.hpp"
-#include <string>
-#include <vector>
 
 namespace mc {
 
-class LoginDisconnect : public Packet {
+class LoginCompression : public Packet {
 public:
-    std::string reason;
+    int threshold = 0;
 
-    LoginDisconnect() = default;
+    LoginCompression() = default;
 
     std::vector<uint8_t> serialize() const override {
-        return {}; // Never sent
+        return {};
     }
 
     uint32_t getPacketID() const override {
-        return 0x00;
+        return 0x03;
     }
 
     PacketDirection getDirection() const override {
-        return PacketDirection::Clientbound;    
+        return PacketDirection::Clientbound;
     }
 
     void read(Socket& socket) {
-        reason = socket.recvString();
+        threshold = socket.recvVarInt();
     }
 };
 

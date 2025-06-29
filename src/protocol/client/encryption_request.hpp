@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../packet.hpp"
-#include "../../util/buffer_utils.hpp"
+#include "../../util/buffer_util.hpp"
 #include "../../network/socket.hpp"
 #include <string>
 #include <vector>
@@ -16,9 +16,8 @@ public:
 
     EncryptionRequest() = default;
 
-    // This packet is only received, not sent — serialization is not used.
     std::vector<uint8_t> serialize() const override {
-        return {};  // Not applicable for received packets
+        return {};  // Never sent
     }
 
     uint32_t getPacketID() const override {
@@ -26,10 +25,9 @@ public:
     }
 
     PacketDirection getDirection() const override {
-      return mc::PacketDirection::Clientbound;
+        return PacketDirection::Clientbound;
     }
 
-    // Custom deserialization from live socket
     void read(Socket& socket) {
         serverID = socket.recvString();
         publicKey = socket.recvByteArray();
@@ -38,3 +36,4 @@ public:
 };
 
 }
+

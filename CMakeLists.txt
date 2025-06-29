@@ -11,6 +11,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
+find_package(ZLIB REQUIRED)
 
 # Add nlohmann/json (header-only library)
 include(FetchContent)
@@ -43,5 +44,6 @@ target_link_libraries(mc_client
         OpenSSL::SSL
         OpenSSL::Crypto
         CURL::libcurl
+        ZLIB::ZLIB
         nlohmann_json::nlohmann_json
 )
