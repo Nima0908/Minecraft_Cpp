@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../packet.hpp"
-#include "../../util/buffer_util.hpp"
 #include "../../network/socket.hpp"
+#include "../../util/buffer_util.hpp"
+#include "../packet.hpp"
 #include <string>
 #include <vector>
 
@@ -10,25 +10,19 @@ namespace mc {
 
 class LoginDisconnect : public Packet {
 public:
-    std::string reason;
+  std::string reason;
 
-    LoginDisconnect() = default;
+  LoginDisconnect() = default;
 
-    std::vector<uint8_t> serialize() const override {
-        return {}; // Never sent
-    }
+  std::vector<uint8_t> serialize() const override { return {}; }
 
-    uint32_t getPacketID() const override {
-        return 0x00;
-    }
+  uint32_t getPacketID() const override { return 0x00; }
 
-    PacketDirection getDirection() const override {
-        return PacketDirection::Clientbound;    
-    }
+  PacketDirection getDirection() const override {
+    return PacketDirection::Clientbound;
+  }
 
-    void read(Socket& socket) {
-        reason = socket.recvString();
-    }
+  void read(BufferUtil &buf) { reason = buf.readString(); }
 };
 
-}
+} // namespace mc

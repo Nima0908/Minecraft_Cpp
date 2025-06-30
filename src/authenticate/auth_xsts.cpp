@@ -4,29 +4,23 @@
 
 using json = nlohmann::json;
 
-XstsResponse getXSTSToken(const std::string& xblToken) {
-    std::string url = "https://xsts.auth.xboxlive.com/xsts/authorize";
+XstsResponse getXSTSToken(const std::string &xblToken) {
+  std::string url = "https://xsts.auth.xboxlive.com/xsts/authorize";
 
-    json body = {
-        {"Properties", {
-            {"SandboxId", "RETAIL"},
-            {"UserTokens", { xblToken }}
-        }},
-        {"RelyingParty", "rp://api.minecraftservices.com/"},
-        {"TokenType", "JWT"}
-    };
+  json body = {
+      {"Properties", {{"SandboxId", "RETAIL"}, {"UserTokens", {xblToken}}}},
+      {"RelyingParty", "rp://api.minecraftservices.com/"},
+      {"TokenType", "JWT"}};
 
-    Headers headers = {
-        "Content-Type: application/json",
-        "Accept: application/json"
-    };
+  Headers headers = {"Content-Type: application/json",
+                     "Accept: application/json"};
 
-    std::string respStr = httpPost(url, body.dump(), headers);
-    auto respJson = json::parse(respStr);
+  std::string respStr = httpPost(url, body.dump(), headers);
+  auto respJson = json::parse(respStr);
 
-    XstsResponse res;
-    res.token = respJson["Token"];
-    res.userhash = respJson["DisplayClaims"]["xui"][0]["uhs"];
+  XstsResponse res;
+  res.token = respJson["Token"];
+  res.userhash = respJson["DisplayClaims"]["xui"][0]["uhs"];
 
-    return res;
+  return res;
 }

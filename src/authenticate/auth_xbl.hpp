@@ -2,8 +2,8 @@
 #include <string>
 
 struct XblResponse {
-    std::string token;
-    std::string userhash;
+  std::string token;
+  std::string userhash;
 };
 
-XblResponse authenticateWithXBL(const std::string& accessToken);
+XblResponse authenticateWithXBL(const std::string &accessToken);
