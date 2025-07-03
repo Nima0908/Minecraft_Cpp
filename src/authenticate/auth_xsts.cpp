@@ -4,6 +4,8 @@
 
 using json = nlohmann::json;
 
+namespace mc::auth {
+
 XstsResponse getXSTSToken(const std::string &xblToken) {
   std::string url = "https://xsts.auth.xboxlive.com/xsts/authorize";
 
@@ -24,3 +26,4 @@ XstsResponse getXSTSToken(const std::string &xblToken) {
 
   return res;
 }
+} // namespace mc::auth

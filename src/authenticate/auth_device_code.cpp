@@ -1,10 +1,11 @@
 #include "auth_device_code.hpp"
 #include "http.hpp"
-#include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
 
 using json = nlohmann::json;
+
+namespace mc::auth {
 
 DeviceCodeResponse requestDeviceCode(const std::string &clientId) {
   std::string url =
@@ -60,3 +61,4 @@ std::string pollToken(const std::string &clientId,
     }
   }
 }
+} // namespace mc::auth

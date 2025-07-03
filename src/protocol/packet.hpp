@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol {
 
 enum class PacketDirection { Clientbound, Serverbound };
 
@@ -15,4 +15,4 @@ public:
   virtual std::vector<uint8_t> serialize() const = 0;
 };
 
-} // namespace mc
+} // namespace mc::protocol

@@ -1,12 +1,11 @@
 #pragma once
 
-#include "../../network/socket.hpp"
 #include "../../util/buffer_util.hpp"
 #include "../packet.hpp"
 #include <string>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol::client {
 
 class LoginDisconnect : public Packet {
 public:
@@ -22,7 +21,7 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(BufferUtil &buf) { reason = buf.readString(); }
+  void read(mc::utils::BufferUtil &buf) { reason = buf.readString(); }
 };
 
-} // namespace mc
+} // namespace mc::protocol::client

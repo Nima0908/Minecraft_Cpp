@@ -1,6 +1,6 @@
 #include "../../util/buffer_util.hpp"
 #include "../packet.hpp"
-namespace mc {
+namespace mc::protocol::server {
 
 class HandshakePacket : public Packet {
 public:
@@ -21,7 +21,7 @@ public:
   }
 
   std::vector<uint8_t> serialize() const override {
-    BufferUtil buf;
+    mc::utils::BufferUtil buf;
     buf.writeVarInt(getPacketID());
     buf.writeVarInt(protocolVersion);
     buf.writeString(serverAddress);
@@ -31,4 +31,4 @@ public:
   }
 };
 
-} // namespace mc
+} // namespace mc::protocol::server

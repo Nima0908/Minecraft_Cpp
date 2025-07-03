@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-namespace mc {
+namespace mc::utils {
 
 enum class LogLevel { INFO, WARN, ERROR, DEBUG };
 
@@ -28,4 +28,4 @@ inline void log(LogLevel level, const std::string &message) {
   }
 }
 
-} // namespace mc
+} // namespace mc::utils

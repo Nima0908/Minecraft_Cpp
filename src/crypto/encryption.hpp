@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace mc::encryption {
+namespace mc::crypto {
 
 std::vector<uint8_t> generateSharedSecret(size_t length = 16);
 
@@ -15,4 +15,4 @@ std::string computeServerHash(const std::string &serverID,
                               const std::vector<uint8_t> &sharedSecret,
                               const std::vector<uint8_t> &publicKey);
 
-} // namespace mc::encryption
+} // namespace mc::crypto

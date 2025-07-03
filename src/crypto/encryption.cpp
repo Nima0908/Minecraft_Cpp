@@ -10,24 +10,23 @@
 #include <string>
 #include <vector>
 
-namespace mc::encryption {
+namespace mc::crypto {
 
 std::vector<uint8_t> generateSharedSecret(size_t length) {
-  mc::log(mc::LogLevel::DEBUG,
-          "Generating shared secret of length: " + std::to_string(length));
   std::vector<uint8_t> secret(length);
   if (RAND_bytes(secret.data(), static_cast<int>(length)) != 1) {
-    mc::log(mc::LogLevel::ERROR, "RAND_bytes failed");
+    mc::utils::log(mc::utils::LogLevel::ERROR, "RAND_bytes failed");
     throw std::runtime_error("Failed to generate shared secret");
   }
-  mc::log(mc::LogLevel::DEBUG, "Shared secret generated successfully.");
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Shared secret generated successfully.");
   return secret;
 }
 
 std::vector<uint8_t> rsaEncrypt(const std::vector<uint8_t> &data,
                                 const std::vector<uint8_t> &publicKey) {
-  mc::log(
-      mc::LogLevel::DEBUG,
+  mc::utils::log(
+      mc::utils::LogLevel::DEBUG,
       "Beginning RSA encryption. Data size: " + std::to_string(data.size()) +
           ", Public key size: " + std::to_string(publicKey.size()));
 
@@ -44,32 +43,33 @@ std::vector<uint8_t> rsaEncrypt(const std::vector<uint8_t> &data,
   int keySize = RSA_size(rsa);
   std::vector<uint8_t> encrypted(keySize);
 
-  mc::log(mc::LogLevel::DEBUG, "Performing RSA_public_encrypt...");
   int result = RSA_public_encrypt(static_cast<int>(data.size()), data.data(),
                                   encrypted.data(), rsa, RSA_PKCS1_PADDING);
 
   RSA_free(rsa);
 
   if (result == -1) {
-    mc::log(mc::LogLevel::ERROR, "RSA_public_encrypt failed");
+    mc::utils::log(mc::utils::LogLevel::ERROR, "RSA_public_encrypt failed");
     throw std::runtime_error("RSA encryption failed");
   }
 
   encrypted.resize(result);
-  mc::log(mc::LogLevel::DEBUG, "RSA encryption successful. Encrypted size: " +
-                                   std::to_string(result));
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "RSA encryption successful. Encrypted size: " +
+                     std::to_string(result));
   return encrypted;
 }
 
 std::string computeServerHash(const std::string &serverID,
                               const std::vector<uint8_t> &sharedSecret,
                               const std::vector<uint8_t> &publicKey) {
-  mc::log(mc::LogLevel::DEBUG, "Computing server hash...");
-  mc::log(mc::LogLevel::DEBUG, "  Server ID: " + serverID);
-  mc::log(mc::LogLevel::DEBUG,
-          "  Shared secret length: " + std::to_string(sharedSecret.size()));
-  mc::log(mc::LogLevel::DEBUG,
-          "  Public key length: " + std::to_string(publicKey.size()));
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Computing server hash...");
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "  Server ID: " + serverID);
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "  Shared secret length: " +
+                     std::to_string(sharedSecret.size()));
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "  Public key length: " + std::to_string(publicKey.size()));
 
   SHA_CTX shaCtx;
   SHA1_Init(&shaCtx);
@@ -96,8 +96,9 @@ std::string computeServerHash(const std::string &serverID,
   for (char &c : hashStr)
     c = std::tolower(c);
 
-  mc::log(mc::LogLevel::DEBUG, "Computed server hash: " + hashStr);
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Computed server hash: " + hashStr);
   return hashStr;
 }
 
-} // namespace mc::encryption
+} // namespace mc::crypto

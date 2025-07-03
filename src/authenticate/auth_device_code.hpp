@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+namespace mc::auth {
+
 struct DeviceCodeResponse {
   std::string device_code;
   std::string user_code;
@@ -12,3 +14,4 @@ struct DeviceCodeResponse {
 DeviceCodeResponse requestDeviceCode(const std::string &clientId);
 std::string pollToken(const std::string &clientId,
                       const std::string &deviceCode, int interval);
+} // namespace mc::auth

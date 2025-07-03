@@ -3,7 +3,7 @@
 #include <openssl/evp.h>
 #include <vector>
 
-namespace mc {
+namespace mc::crypto {
 
 class AESCipher {
 public:
@@ -18,4 +18,4 @@ private:
   EVP_CIPHER_CTX *decryptCtx_;
 };
 
-} // namespace mc
+} // namespace mc::crypto

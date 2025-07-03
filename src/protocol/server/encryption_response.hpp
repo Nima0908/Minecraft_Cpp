@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol::server {
 
 class EncryptionResponse : public Packet {
 public:
@@ -20,7 +20,7 @@ public:
   }
 
   std::vector<uint8_t> serialize() const override {
-    BufferUtil buf;
+    mc::utils::BufferUtil buf;
     buf.writeVarInt(getPacketID());
     buf.writeByteArray(encryptedSecret_);
     buf.writeByteArray(encryptedToken_);
@@ -32,4 +32,4 @@ private:
   std::vector<uint8_t> encryptedToken_;
 };
 
-} // namespace mc
+} // namespace mc::protocol::server

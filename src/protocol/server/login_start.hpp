@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol::server {
 
 class LoginStart : public Packet {
 public:
@@ -23,7 +23,7 @@ public:
   }
 
   std::vector<uint8_t> serialize() const override {
-    BufferUtil buf;
+    mc::utils::BufferUtil buf;
     buf.writeVarInt(getPacketID());
     buf.writeString(username);
     buf.writeBytes(std::vector<uint8_t>(uuid.begin(), uuid.end()));
@@ -31,4 +31,4 @@ public:
   }
 };
 
-} // namespace mc
+} // namespace mc::protocol::server

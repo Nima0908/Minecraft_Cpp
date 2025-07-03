@@ -1,11 +1,10 @@
 #include "socket.hpp"
 #include "../util/buffer_util.hpp"
 #include "../util/compression_util.hpp"
-#include <iostream>
 #include <stdexcept>
 #include <zlib.h>
 
-namespace mc {
+namespace mc::network {
 
 Socket::Socket()
     : socket_(io_context_), encryptionEnabled_(false),
@@ -23,7 +22,7 @@ void Socket::connect(const std::string &host, int port) {
   boost::asio::connect(socket_, endpoints);
 }
 
-void Socket::enableEncryption(std::shared_ptr<AESCipher> cipher) {
+void Socket::enableEncryption(std::shared_ptr<mc::crypto::AESCipher> cipher) {
   cipher_ = cipher;
   encryptionEnabled_ = true;
 }
@@ -35,7 +34,7 @@ void Socket::setCompressionThreshold(int threshold) {
 // --- Sending ---
 void Socket::sendPacket(const std::vector<uint8_t> &rawData) {
   std::vector<uint8_t> compressed = compressIfNeeded(rawData);
-  BufferUtil buf;
+  mc::utils::BufferUtil buf;
   buf.writeVarInt(static_cast<int32_t>(compressed.size()));
   buf.writeBytes(compressed);
 
@@ -112,10 +111,10 @@ Socket::compressIfNeeded(const std::vector<uint8_t> &data) {
     return data;
   }
 
-  BufferUtil buf;
+  mc::utils::BufferUtil buf;
 
   if (static_cast<int>(data.size()) >= compressionThreshold_) {
-    std::vector<uint8_t> compressed = mc::compression::compress(data);
+    std::vector<uint8_t> compressed = mc::utils::compress(data);
 
     buf.writeVarInt(static_cast<int32_t>(data.size()));
     buf.writeBytes(compressed);
@@ -133,7 +132,7 @@ Socket::decompressIfNeeded(const std::vector<uint8_t> &data) {
     return data;
   }
 
-  BufferUtil buf(data);
+  mc::utils::BufferUtil buf(data);
 
   int32_t uncompressedLength = buf.readVarInt();
 
@@ -141,8 +140,7 @@ Socket::decompressIfNeeded(const std::vector<uint8_t> &data) {
     return buf.readBytes(buf.remaining());
   } else {
     std::vector<uint8_t> compressedData = buf.readBytes(buf.remaining());
-    std::vector<uint8_t> decompressed =
-        mc::compression::decompress(compressedData);
+    std::vector<uint8_t> decompressed = mc::utils::decompress(compressedData);
 
     if (static_cast<int32_t>(decompressed.size()) != uncompressedLength) {
       throw std::runtime_error("Decompressed data size mismatch: expected " +
@@ -154,4 +152,4 @@ Socket::decompressIfNeeded(const std::vector<uint8_t> &data) {
   }
 }
 
-} // namespace mc
+} // namespace mc::network

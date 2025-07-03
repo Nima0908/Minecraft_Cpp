@@ -1,12 +1,11 @@
 #pragma once
 
-#include "../../network/socket.hpp"
 #include "../../util/buffer_util.hpp"
 #include "../packet.hpp"
 #include <string>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol::client {
 
 class EncryptionRequest : public Packet {
 public:
@@ -24,11 +23,11 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(BufferUtil &buf) {
+  void read(mc::utils::BufferUtil &buf) {
     serverID = buf.readString();
     publicKey = buf.readByteArray();
     verifyToken = buf.readByteArray();
   }
 };
 
-} // namespace mc
+} // namespace mc::protocol::client

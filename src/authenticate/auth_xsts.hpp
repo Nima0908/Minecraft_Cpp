@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
-#include <vector>
+
+namespace mc::auth {
 
 struct XstsResponse {
   std::string token;
@@ -8,3 +9,4 @@ struct XstsResponse {
 };
 
 XstsResponse getXSTSToken(const std::string &xblToken);
+} // namespace mc::auth

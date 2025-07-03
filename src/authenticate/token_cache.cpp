@@ -1,6 +1,8 @@
 #include "token_cache.hpp"
 #include <fstream>
 
+namespace mc::auth {
+
 std::optional<std::string> loadToken(const std::string &filename) {
   std::ifstream file(filename);
   if (!file.is_open())
@@ -19,3 +21,4 @@ void saveToken(const std::string &filename, const std::string &token) {
 }
 
 void clearToken(const std::string &filename) { std::remove(filename.c_str()); }
+} // namespace mc::auth

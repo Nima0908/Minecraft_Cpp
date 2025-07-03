@@ -4,6 +4,8 @@
 
 using json = nlohmann::json;
 
+namespace mc::auth {
+
 MinecraftLoginResponse loginWithMinecraft(const std::string &userhash,
                                           const std::string &xstsToken) {
   std::string url =
@@ -37,3 +39,4 @@ bool checkMinecraftOwnership(const std::string &mcAccessToken) {
 
   return false;
 }
+} // namespace mc::auth

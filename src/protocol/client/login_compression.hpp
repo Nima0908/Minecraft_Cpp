@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../../network/socket.hpp"
 #include "../../util/buffer_util.hpp"
 #include "../packet.hpp"
 
-namespace mc {
+namespace mc::protocol::client {
 
 class LoginCompression : public Packet {
 public:
@@ -20,7 +19,7 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(BufferUtil &buf) { threshold = buf.readVarInt(); }
+  void read(mc::utils::BufferUtil &buf) { threshold = buf.readVarInt(); }
 };
 
-} // namespace mc
+} // namespace mc::protocol::client

@@ -4,6 +4,8 @@
 
 using json = nlohmann::json;
 
+namespace mc::auth {
+
 XblResponse authenticateWithXBL(const std::string &accessToken) {
   std::string url = "https://user.auth.xboxlive.com/user/authenticate";
 
@@ -26,3 +28,4 @@ XblResponse authenticateWithXBL(const std::string &accessToken) {
 
   return res;
 }
+} // namespace mc::auth

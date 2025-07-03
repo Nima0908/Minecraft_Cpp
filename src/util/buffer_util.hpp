@@ -1,12 +1,10 @@
 #pragma once
-#include <array>
+
 #include <cstdint>
-#include <filesystem>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
-namespace mc {
+namespace mc::utils {
 class BufferUtil {
 private:
   std::vector<uint8_t> buffer_;
@@ -32,7 +30,4 @@ public:
   size_t remaining() const;
   const std::vector<uint8_t> &data() const;
 };
-
-std::array<uint8_t, 16> parseDashlessUUID(const std::string &hexUUID);
-std::string formatUUIDFromBytes(const std::vector<uint8_t> &uuidBytes);
-} // namespace mc
+} // namespace mc::utils

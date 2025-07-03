@@ -17,6 +17,7 @@
 #include "protocol/server/login_start.hpp"
 #include "util/buffer_util.hpp"
 #include "util/logger.hpp"
+#include "util/uuid_utils.hpp"
 
 #include <curl/curl.h>
 #include <iostream>
@@ -53,13 +54,13 @@ struct ServerConnection {
 
 std::string getOrCreateToken(const std::string &filename,
                              std::function<std::string()> createToken) {
-  auto existingToken = loadToken(filename);
+  auto existingToken = mc::auth::loadToken(filename);
   if (existingToken) {
     return *existingToken;
   }
 
   std::string newToken = createToken();
-  saveToken(filename, newToken);
+  mc::auth::saveToken(filename, newToken);
   return newToken;
 }
 
@@ -67,42 +68,44 @@ AuthTokens performAuthentication() {
   AuthTokens tokens;
 
   tokens.msToken = getOrCreateToken("ms_access_token.txt", []() {
-    auto deviceCodeResp = requestDeviceCode(CLIENT_ID);
-    mc::log(mc::LogLevel::DEBUG, "Got device code response");
-    mc::log(mc::LogLevel::DEBUG,
-            "Verification URI: " + deviceCodeResp.verification_uri);
-    mc::log(mc::LogLevel::DEBUG, "User Code: " + deviceCodeResp.user_code);
-    return pollToken(CLIENT_ID, deviceCodeResp.device_code,
-                     deviceCodeResp.interval);
+    auto deviceCodeResp = mc::auth::requestDeviceCode(CLIENT_ID);
+    mc::utils::log(mc::utils::LogLevel::DEBUG, "Got device code response");
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "Verification URI: " + deviceCodeResp.verification_uri);
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "User Code: " + deviceCodeResp.user_code);
+    return mc::auth::pollToken(CLIENT_ID, deviceCodeResp.device_code,
+                               deviceCodeResp.interval);
   });
 
-  auto xblTokenOpt = loadToken("xbl_token.txt");
-  auto userhashOpt = loadToken("userhash.txt");
+  auto xblTokenOpt = mc::auth::loadToken("xbl_token.txt");
+  auto userhashOpt = mc::auth::loadToken("userhash.txt");
 
   if (!xblTokenOpt || !userhashOpt) {
-    auto xblResp = authenticateWithXBL(tokens.msToken);
+    auto xblResp = mc::auth::authenticateWithXBL(tokens.msToken);
     tokens.xblToken = xblResp.token;
     tokens.userhash = xblResp.userhash;
-    saveToken("xbl_token.txt", tokens.xblToken);
-    saveToken("userhash.txt", tokens.userhash);
+    mc::auth::saveToken("xbl_token.txt", tokens.xblToken);
+    mc::auth::saveToken("userhash.txt", tokens.userhash);
   } else {
     tokens.xblToken = *xblTokenOpt;
     tokens.userhash = *userhashOpt;
   }
 
   tokens.xstsToken = getOrCreateToken("xsts_token.txt", [&tokens]() {
-    auto xstsResp = getXSTSToken(tokens.xblToken);
+    auto xstsResp = mc::auth::getXSTSToken(tokens.xblToken);
     return xstsResp.token;
   });
 
   tokens.mcToken = getOrCreateToken("mc_access_token.txt", [&tokens]() {
-    auto mcResp = loginWithMinecraft(tokens.userhash, tokens.xstsToken);
+    auto mcResp =
+        mc::auth::loginWithMinecraft(tokens.userhash, tokens.xstsToken);
     return mcResp.access_token;
   });
 
-  tokens.minecraftUUID = getMinecraftUUID(tokens.mcToken);
-  mc::log(mc::LogLevel::INFO,
-          "Fetched Minecraft UUID: " + tokens.minecraftUUID);
+  tokens.minecraftUUID = mc::auth::getMinecraftUUID(tokens.mcToken);
+  mc::utils::log(mc::utils::LogLevel::INFO,
+                 "Fetched Minecraft UUID: " + tokens.minecraftUUID);
 
   return tokens;
 }
@@ -118,89 +121,99 @@ ServerConnection getServerDetails() {
   return connection;
 }
 
-void sendHandshakeAndLogin(mc::Socket &socket,
+void sendHandshakeAndLogin(mc::network::Socket &socket,
                            const ServerConnection &connection,
                            const std::string &minecraftUUID) {
-  mc::HandshakePacket handshake(PROTOCOL_VERSION, connection.address,
-                                connection.port, LOGIN_STATE);
+  mc::protocol::server::HandshakePacket handshake(
+      PROTOCOL_VERSION, connection.address, connection.port, LOGIN_STATE);
   socket.sendPacket(handshake.serialize());
-  mc::log(mc::LogLevel::DEBUG, "Sent handshake packet");
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Sent handshake packet");
 
-  std::array<uint8_t, 16> uuidBytes = mc::parseDashlessUUID(minecraftUUID);
-  mc::LoginStart loginStart(connection.username, uuidBytes);
+  std::array<uint8_t, 16> uuidBytes =
+      mc::utils::parseDashlessUUID(minecraftUUID);
+  mc::protocol::server::LoginStart loginStart(connection.username, uuidBytes);
   socket.sendPacket(loginStart.serialize());
-  mc::log(mc::LogLevel::DEBUG,
-          "Sent login start packet with username: " + connection.username);
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Sent login start packet with username: " +
+                     connection.username);
 }
 
-void handleEncryptionRequest(mc::Socket &socket, mc::BufferUtil &reader,
+void handleEncryptionRequest(mc::network::Socket &socket,
+                             mc::utils::BufferUtil &reader,
                              const std::string &mcToken,
                              const std::string &minecraftUUID) {
-  mc::EncryptionRequest encryptionRequest;
+  mc::protocol::client::EncryptionRequest encryptionRequest;
   encryptionRequest.serverID = reader.readString();
   encryptionRequest.publicKey = reader.readByteArray();
   encryptionRequest.verifyToken = reader.readByteArray();
-  mc::log(mc::LogLevel::DEBUG, "Parsed encryption request");
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Parsed encryption request");
 
-  auto sharedSecret = mc::encryption::generateSharedSecret();
+  auto sharedSecret = mc::crypto::generateSharedSecret();
   auto encryptedSecret =
-      mc::encryption::rsaEncrypt(sharedSecret, encryptionRequest.publicKey);
-  auto encryptedToken = mc::encryption::rsaEncrypt(
-      encryptionRequest.verifyToken, encryptionRequest.publicKey);
-  std::string serverHash = mc::encryption::computeServerHash(
+      mc::crypto::rsaEncrypt(sharedSecret, encryptionRequest.publicKey);
+  auto encryptedToken = mc::crypto::rsaEncrypt(encryptionRequest.verifyToken,
+                                               encryptionRequest.publicKey);
+  std::string serverHash = mc::crypto::computeServerHash(
       encryptionRequest.serverID, sharedSecret, encryptionRequest.publicKey);
 
-  sendJoinServerRequest(mcToken, minecraftUUID, serverHash);
-  mc::EncryptionResponse response(encryptedSecret, encryptedToken);
+  mc::auth::sendJoinServerRequest(mcToken, minecraftUUID, serverHash);
+  mc::protocol::server::EncryptionResponse response(encryptedSecret,
+                                                    encryptedToken);
   socket.sendPacket(response.serialize());
 
-  socket.enableEncryption(std::make_shared<mc::AESCipher>(sharedSecret));
-  mc::log(mc::LogLevel::INFO, "AES encryption activated");
+  socket.enableEncryption(
+      std::make_shared<mc::crypto::AESCipher>(sharedSecret));
+  mc::utils::log(mc::utils::LogLevel::INFO, "AES encryption activated");
 }
 
-void handleLoginSuccess(mc::BufferUtil &reader) {
-  mc::LoginFinished loginSuccess;
+void handleLoginSuccess(mc::utils::BufferUtil &reader) {
+  mc::protocol::client::LoginFinished loginSuccess;
   loginSuccess.read(reader);
 
-  mc::log(mc::LogLevel::DEBUG, "Username: " + loginSuccess.username);
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Username: " + loginSuccess.username);
 
-  std::string uuidStr = mc::formatUUIDFromBytes(
+  std::string uuidStr = mc::utils::formatUUIDFromBytes(
       std::vector<uint8_t>(loginSuccess.uuid.begin(), loginSuccess.uuid.end()));
-  mc::log(mc::LogLevel::DEBUG, "UUID: " + uuidStr);
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "UUID: " + uuidStr);
 
   for (const auto &prop : loginSuccess.properties) {
     std::string propLog = "Property: " + prop.name + " = " + prop.value;
     if (prop.signature.has_value()) {
       propLog += " (Signature: " + *prop.signature + ")";
     }
-    mc::log(mc::LogLevel::DEBUG, propLog);
+    mc::utils::log(mc::utils::LogLevel::DEBUG, propLog);
   }
 }
 
-void handleLoginCompression(mc::Socket &socket, mc::BufferUtil &reader) {
-  mc::LoginCompression compressionPacket;
+void handleLoginCompression(mc::network::Socket &socket,
+                            mc::utils::BufferUtil &reader) {
+  mc::protocol::client::LoginCompression compressionPacket;
   compressionPacket.threshold = reader.readVarInt();
-  mc::log(mc::LogLevel::INFO, "Login compression threshold: " +
-                                  std::to_string(compressionPacket.threshold));
+  mc::utils::log(mc::utils::LogLevel::INFO,
+                 "Login compression threshold: " +
+                     std::to_string(compressionPacket.threshold));
 
   socket.setCompressionThreshold(compressionPacket.threshold);
-  mc::log(mc::LogLevel::INFO, "Compression activated with threshold: " +
-                                  std::to_string(compressionPacket.threshold));
+  mc::utils::log(mc::utils::LogLevel::INFO,
+                 "Compression activated with threshold: " +
+                     std::to_string(compressionPacket.threshold));
 }
 
-bool processLoginPacket(mc::Socket &socket, const std::string &mcToken,
+bool processLoginPacket(mc::network::Socket &socket, const std::string &mcToken,
                         const std::string &minecraftUUID) {
   auto loginPacket = socket.recvPacket();
-  mc::BufferUtil reader(loginPacket);
+  mc::utils::BufferUtil reader(loginPacket);
   int packetId = reader.readVarInt();
-  mc::log(mc::LogLevel::DEBUG,
-          "Received packet ID: " + std::to_string(packetId));
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Received packet ID: " + std::to_string(packetId));
 
   switch (static_cast<LoginPacketId>(packetId)) {
   case LoginPacketId::DISCONNECT: {
-    mc::LoginDisconnect disconnect;
+    mc::protocol::client::LoginDisconnect disconnect;
     disconnect.reason = reader.readString();
-    mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "Disconnected: " + disconnect.reason);
     return false;
   }
 
@@ -217,28 +230,28 @@ bool processLoginPacket(mc::Socket &socket, const std::string &mcToken,
     return true;
 
   default:
-    mc::log(mc::LogLevel::ERROR,
-            "Unexpected packet ID: " + std::to_string(packetId));
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "Unexpected packet ID: " + std::to_string(packetId));
     return false;
   }
 }
 
-bool processPostEncryptionPackets(mc::Socket &socket) {
+bool processPostEncryptionPackets(mc::network::Socket &socket) {
   auto nextPacket = socket.recvPacket();
-  mc::BufferUtil nextReader(nextPacket);
+  mc::utils::BufferUtil nextReader(nextPacket);
   int nextPacketId = nextReader.readVarInt();
-  mc::log(mc::LogLevel::DEBUG,
-          "Received packet ID: " + std::to_string(nextPacketId));
+  mc::utils::log(mc::utils::LogLevel::DEBUG,
+                 "Received packet ID: " + std::to_string(nextPacketId));
 
   switch (static_cast<LoginPacketId>(nextPacketId)) {
   case LoginPacketId::LOGIN_COMPRESSION: {
     handleLoginCompression(socket, nextReader);
 
     auto loginSuccessPacket = socket.recvPacket();
-    mc::BufferUtil successReader(loginSuccessPacket);
+    mc::utils::BufferUtil successReader(loginSuccessPacket);
     int successPacketId = successReader.readVarInt();
-    mc::log(mc::LogLevel::DEBUG,
-            "Received packet ID: " + std::to_string(successPacketId));
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "Received packet ID: " + std::to_string(successPacketId));
 
     switch (static_cast<LoginPacketId>(successPacketId)) {
     case LoginPacketId::LOGIN_SUCCESS:
@@ -246,15 +259,17 @@ bool processPostEncryptionPackets(mc::Socket &socket) {
       return true;
 
     case LoginPacketId::DISCONNECT: {
-      mc::LoginDisconnect disconnect;
+      mc::protocol::client::LoginDisconnect disconnect;
       disconnect.reason = successReader.readString();
-      mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+      mc::utils::log(mc::utils::LogLevel::ERROR,
+                     "Disconnected: " + disconnect.reason);
       return false;
     }
 
     default:
-      mc::log(mc::LogLevel::ERROR, "Expected Login Success (0x02), got: " +
-                                       std::to_string(successPacketId));
+      mc::utils::log(mc::utils::LogLevel::ERROR,
+                     "Expected Login Success (0x02), got: " +
+                         std::to_string(successPacketId));
       return false;
     }
   }
@@ -264,16 +279,18 @@ bool processPostEncryptionPackets(mc::Socket &socket) {
     return true;
 
   case LoginPacketId::DISCONNECT: {
-    mc::LoginDisconnect disconnect;
+    mc::protocol::client::LoginDisconnect disconnect;
     disconnect.reason = nextReader.readString();
-    mc::log(mc::LogLevel::ERROR, "Disconnected: " + disconnect.reason);
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "Disconnected: " + disconnect.reason);
     return false;
   }
 
   default:
-    mc::log(mc::LogLevel::ERROR,
-            "Expected Login Compression (0x03) or Login Success (0x02), got: " +
-                std::to_string(nextPacketId));
+    mc::utils::log(
+        mc::utils::LogLevel::ERROR,
+        "Expected Login Compression (0x03) or Login Success (0x02), got: " +
+            std::to_string(nextPacketId));
     return false;
   }
 }
@@ -284,9 +301,10 @@ int main() {
 
     ServerConnection connection = getServerDetails();
 
-    mc::Socket socket;
+    mc::network::Socket socket;
     socket.connect(connection.address, connection.port);
-    mc::log(mc::LogLevel::DEBUG, "Connected to server " + connection.address);
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "Connected to server " + connection.address);
 
     sendHandshakeAndLogin(socket, connection, tokens.minecraftUUID);
 
@@ -298,15 +316,16 @@ int main() {
       return 1;
     }
 
-    mc::LoginAcknowledged loginAck;
+    mc::protocol::server::LoginAcknowledged loginAck;
     socket.sendPacket(loginAck.serialize());
-    mc::log(mc::LogLevel::DEBUG, "Sent login acknowledgment");
+    mc::utils::log(mc::utils::LogLevel::DEBUG, "Sent login acknowledgment");
 
-    mc::log(mc::LogLevel::INFO, "Successfully logged into the server!");
+    mc::utils::log(mc::utils::LogLevel::INFO,
+                   "Successfully logged into the server!");
     return 0;
 
   } catch (const std::exception &e) {
-    mc::log(mc::LogLevel::ERROR, e.what());
+    mc::utils::log(mc::utils::LogLevel::ERROR, e.what());
     return 1;
   }
 }

@@ -5,6 +5,8 @@
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
+namespace mc::auth {
+
 void sendJoinServerRequest(const std::string &accessToken,
                            const std::string &selectedProfile,
                            const std::string &serverHash) {
@@ -13,12 +15,9 @@ void sendJoinServerRequest(const std::string &accessToken,
                             {"serverId", serverHash}};
   std::string data = payload.dump();
 
-  mc::log(mc::LogLevel::DEBUG, "Sending Join Server Request");
-  mc::log(mc::LogLevel::DEBUG, "Payload: " + data);
-
   CURL *curl = curl_easy_init();
   if (!curl) {
-    mc::log(mc::LogLevel::ERROR, "CURL init failed");
+    mc::utils::log(mc::utils::LogLevel::ERROR, "CURL init failed");
     throw std::runtime_error("CURL init failed");
   }
 
@@ -32,10 +31,12 @@ void sendJoinServerRequest(const std::string &accessToken,
 
   CURLcode res = curl_easy_perform(curl);
   if (res != CURLE_OK) {
-    mc::log(mc::LogLevel::ERROR,
-            "Mojang join failed: " + std::string(curl_easy_strerror(res)));
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "Mojang join failed: " +
+                       std::string(curl_easy_strerror(res)));
   } else {
-    mc::log(mc::LogLevel::DEBUG, "Join server request sent successfully");
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "Join server request sent successfully");
   }
 
   curl_slist_free_all(headers);
@@ -48,11 +49,10 @@ void sendJoinServerRequest(const std::string &accessToken,
 }
 
 std::string getMinecraftUUID(const std::string &accessToken) {
-  mc::log(mc::LogLevel::DEBUG, "Fetching Minecraft UUID from access token");
 
   CURL *curl = curl_easy_init();
   if (!curl) {
-    mc::log(mc::LogLevel::ERROR, "curl init failed");
+    mc::utils::log(mc::utils::LogLevel::ERROR, "curl init failed");
     throw std::runtime_error("curl init failed");
   }
 
@@ -62,7 +62,7 @@ std::string getMinecraftUUID(const std::string &accessToken) {
   curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
   struct curl_slist *headers = nullptr;
   std::string authHeader = "Authorization: Bearer " + accessToken;
-  mc::log(mc::LogLevel::DEBUG, "Using header: " + authHeader);
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Using header: " + authHeader);
   headers = curl_slist_append(headers, authHeader.c_str());
   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
@@ -76,10 +76,12 @@ std::string getMinecraftUUID(const std::string &accessToken) {
 
   CURLcode res = curl_easy_perform(curl);
   if (res != CURLE_OK) {
-    mc::log(mc::LogLevel::ERROR,
-            "Failed to get profile: " + std::string(curl_easy_strerror(res)));
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "Failed to get profile: " +
+                       std::string(curl_easy_strerror(res)));
   } else {
-    mc::log(mc::LogLevel::DEBUG, "Profile response: " + responseStr);
+    mc::utils::log(mc::utils::LogLevel::DEBUG,
+                   "Profile response: " + responseStr);
   }
 
   curl_slist_free_all(headers);
@@ -92,15 +94,18 @@ std::string getMinecraftUUID(const std::string &accessToken) {
   try {
     auto json = nlohmann::json::parse(responseStr);
     if (json.contains("id")) {
-      mc::log(mc::LogLevel::DEBUG,
-              "UUID parsed from profile: " + json["id"].get<std::string>());
+      mc::utils::log(mc::utils::LogLevel::DEBUG,
+                     "UUID parsed from profile: " +
+                         json["id"].get<std::string>());
       return json["id"];
     } else {
-      mc::log(mc::LogLevel::ERROR, "UUID not found in profile response");
+      mc::utils::log(mc::utils::LogLevel::ERROR,
+                     "UUID not found in profile response");
       throw std::runtime_error("UUID not found in profile response");
     }
   } catch (const std::exception &e) {
-    mc::log(mc::LogLevel::ERROR, std::string("JSON parse error: ") + e.what());
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   std::string("JSON parse error: ") + e.what());
     throw;
   }
 }
@@ -111,6 +116,7 @@ std::string stripDashes(const std::string &uuid) {
     if (c != '-')
       result += c;
   }
-  mc::log(mc::LogLevel::DEBUG, "Stripped UUID: " + result);
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Stripped UUID: " + result);
   return result;
 }
+} // namespace mc::auth

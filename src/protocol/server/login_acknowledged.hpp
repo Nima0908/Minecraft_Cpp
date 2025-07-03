@@ -2,11 +2,9 @@
 
 #include "../../util/buffer_util.hpp"
 #include "../packet.hpp"
-#include <array>
-#include <string>
 #include <vector>
 
-namespace mc {
+namespace mc::protocol::server {
 
 class LoginAcknowledged : public Packet {
 public:
@@ -19,10 +17,10 @@ public:
   }
 
   std::vector<uint8_t> serialize() const override {
-    BufferUtil buf;
+    mc::utils::BufferUtil buf;
     buf.writeVarInt(getPacketID());
     return buf.data();
   }
 };
 
-} // namespace mc
+} // namespace mc::protocol::server
