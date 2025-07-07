@@ -1,4 +1,87 @@
-#include "authenticate/auth_device_code.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_vulkan.h>
+
+#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
+#include <vulkan/vulkan_core.h>
+
+class HelloTriangleApplication {
+public:
+  void run() {
+    initWindow();
+    initVulkan();
+    mainLoop();
+    cleanup();
+  }
+
+private:
+  void createInstance() {
+    VkApplicationInfo appInfo{};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Minecraft C++";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "No Engine";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
+
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+  }
+
+  void initWindow() {
+    window = SDL_CreateWindow("Minecraft C++", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
+                              SDL_WINDOW_VULKAN);
+  }
+
+  void initVulkan() { createInstance(); }
+
+  void mainLoop() {
+    bool running = true;
+    SDL_Event event;
+
+    while (running) {
+      while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+          running = false;
+        }
+        // Handle other events (e.g. keyboard, mouse) here
+      }
+
+      // Optional: rendering or updates here
+    }
+  }
+
+  void cleanup() {
+
+    SDL_DestroyWindow(window);
+    window = nullptr;
+    SDL_Quit();
+  }
+
+  VkInstance instance;
+  SDL_Window *window = nullptr;
+  const uint32_t WIDTH = 800;
+  const uint32_t HEIGHT = 600;
+};
+
+int main() {
+  HelloTriangleApplication app;
+
+  try {
+    app.run();
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+/*#include "authenticate/auth_device_code.hpp"
 #include "authenticate/auth_minecraft.hpp"
 #include "authenticate/auth_session.hpp"
 #include "authenticate/auth_xbl.hpp"
@@ -328,4 +411,4 @@ int main() {
     mc::utils::log(mc::utils::LogLevel::ERROR, e.what());
     return 1;
   }
-}
+}*/
