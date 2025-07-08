@@ -7,11 +7,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # IDE folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Prefer mold if available
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-fuse-ld=mold" HAS_MOLD)
+if (HAS_MOLD)
+    message(STATUS "Using mold linker")
+    add_link_options("-fuse-ld=mold")
+endif()
+
 # Find dependencies
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(Vulkan REQUIRED)
 
 # Add nlohmann/json (header-only library)
 include(FetchContent)
@@ -35,6 +45,8 @@ add_executable(mc_client ${SOURCES})
 target_include_directories(mc_client PRIVATE
     ${Boost_INCLUDE_DIRS}
     ${CURL_INCLUDE_DIRS}
+    ${SDL2_INCLUDE_DIRS}
+    ${Vulkan_INCLUDE_DIRS}
 )
 
 # Link libraries
@@ -46,4 +58,6 @@ target_link_libraries(mc_client
         CURL::libcurl
         ZLIB::ZLIB
         nlohmann_json::nlohmann_json
+        ${SDL2_LIBRARIES}
+        Vulkan::Vulkan
 )
