@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../../util/buffer_util.hpp"
-#include "../packet.hpp"
+#include "../../../buffer/read_buffer.hpp"
+#include "../../../buffer/write_buffer.hpp"
+#include "../../packet.hpp"
 #include <array>
 #include <string>
 #include <vector>
 
-namespace mc::protocol::server {
+namespace mc::protocol::client::login {
 
 class LoginStart : public Packet {
 public:
@@ -22,13 +23,14 @@ public:
     return PacketDirection::Serverbound;
   }
 
-  std::vector<uint8_t> serialize() const override {
-    mc::utils::BufferUtil buf;
+  std::vector<uint8_t> serialize(mc::buffer::WriteBuffer &buf) const override {
     buf.writeVarInt(getPacketID());
     buf.writeString(username);
     buf.writeBytes(std::vector<uint8_t>(uuid.begin(), uuid.end()));
-    return buf.data();
+    return buf.compile();
   }
+
+  void read(mc::buffer::ReadBuffer &buf) override {}
 };
 
-} // namespace mc::protocol::server
+} // namespace mc::protocol::client::login

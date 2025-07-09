@@ -1,6 +1,10 @@
 #include "socket.hpp"
-#include "../util/buffer_util.hpp"
+#include "../buffer/read_buffer.hpp"
+#include "../buffer/write_buffer.hpp"
 #include "../util/compression_util.hpp"
+#include "../util/logger.hpp"
+#include <iomanip>
+#include <iostream>
 #include <stdexcept>
 #include <zlib.h>
 
@@ -32,15 +36,28 @@ void Socket::setCompressionThreshold(int threshold) {
 }
 
 // --- Sending ---
-void Socket::sendPacket(const std::vector<uint8_t> &rawData) {
+/*void Socket::sendPacket(const std::vector<uint8_t> &rawData) {
   std::vector<uint8_t> compressed = compressIfNeeded(rawData);
-  mc::utils::BufferUtil buf;
+  mc::buffer::WriteBuffer buf;
   buf.writeVarInt(static_cast<int32_t>(compressed.size()));
   buf.writeBytes(compressed);
 
   std::vector<uint8_t> output = (encryptionEnabled_ && cipher_)
-                                    ? cipher_->encrypt(buf.data())
-                                    : buf.data();
+                                    ? cipher_->encrypt(buf.compile())
+                                    : buf.compile();
+
+  boost::asio::write(socket_, boost::asio::buffer(output));
+}*/
+
+void Socket::sendPacket(const std::vector<uint8_t> &rawData) {
+  std::vector<uint8_t> compressed = compressIfNeeded(rawData);
+  mc::buffer::WriteBuffer buf;
+  buf.writeVarInt(static_cast<int32_t>(compressed.size()));
+  buf.writeBytes(compressed);
+
+  std::vector<uint8_t> output = (encryptionEnabled_ && cipher_)
+                                    ? cipher_->encrypt(buf.compile())
+                                    : buf.compile();
 
   boost::asio::write(socket_, boost::asio::buffer(output));
 }
@@ -111,7 +128,7 @@ Socket::compressIfNeeded(const std::vector<uint8_t> &data) {
     return data;
   }
 
-  mc::utils::BufferUtil buf;
+  mc::buffer::WriteBuffer buf;
 
   if (static_cast<int>(data.size()) >= compressionThreshold_) {
     std::vector<uint8_t> compressed = mc::utils::compress(data);
@@ -123,7 +140,7 @@ Socket::compressIfNeeded(const std::vector<uint8_t> &data) {
     buf.writeBytes(data);
   }
 
-  return buf.data();
+  return buf.compile();
 }
 
 std::vector<uint8_t>
@@ -132,7 +149,7 @@ Socket::decompressIfNeeded(const std::vector<uint8_t> &data) {
     return data;
   }
 
-  mc::utils::BufferUtil buf(data);
+  mc::buffer::ReadBuffer buf(data);
 
   int32_t uncompressedLength = buf.readVarInt();
 

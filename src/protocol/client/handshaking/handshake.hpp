@@ -1,6 +1,7 @@
-#include "../../util/buffer_util.hpp"
-#include "../packet.hpp"
-namespace mc::protocol::server {
+#include "../../../buffer/read_buffer.hpp"
+#include "../../../buffer/write_buffer.hpp"
+#include "../../packet.hpp"
+namespace mc::protocol::client::handshaking {
 
 class HandshakePacket : public Packet {
 public:
@@ -20,15 +21,16 @@ public:
     return PacketDirection::Serverbound;
   }
 
-  std::vector<uint8_t> serialize() const override {
-    mc::utils::BufferUtil buf;
+  std::vector<uint8_t> serialize(mc::buffer::WriteBuffer &buf) const override {
     buf.writeVarInt(getPacketID());
     buf.writeVarInt(protocolVersion);
     buf.writeString(serverAddress);
     buf.writeUInt16(port);
     buf.writeVarInt(nextState);
-    return buf.data();
+    return buf.compile();
   }
+
+  void read(mc::buffer::ReadBuffer &buf) override {};
 };
 
-} // namespace mc::protocol::server
+} // namespace mc::protocol::client::handshaking

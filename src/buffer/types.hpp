@@ -1,12 +1,11 @@
 #pragma once
-#include <vector>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace mc::buffer {
-    using ByteArray = std::vector<uint8_t>;
+using ByteArray = std::vector<uint8_t>;
 
-    class ReadBuffer;
-    class WriteBuffer;
-}
-
+class ReadBuffer;
+class WriteBuffer;
+} // namespace mc::buffer

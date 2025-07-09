@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../util/buffer_util.hpp"
-#include "../packet.hpp"
+#include "../../../buffer/read_buffer.hpp"
+#include "../../../buffer/write_buffer.hpp"
+#include "../../packet.hpp"
 #include <string>
 #include <vector>
 
-namespace mc::protocol::client {
+namespace mc::protocol::server::login {
 
 class EncryptionRequest : public Packet {
 public:
@@ -15,7 +16,9 @@ public:
 
   EncryptionRequest() = default;
 
-  std::vector<uint8_t> serialize() const override { return {}; }
+  std::vector<uint8_t> serialize(mc::buffer::WriteBuffer &buf) const override {
+    return {};
+  }
 
   uint32_t getPacketID() const override { return 0x01; }
 
@@ -23,11 +26,11 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(mc::utils::BufferUtil &buf) {
+  void read(mc::buffer::ReadBuffer &buf) override {
     serverID = buf.readString();
     publicKey = buf.readByteArray();
     verifyToken = buf.readByteArray();
   }
 };
 
-} // namespace mc::protocol::client
+} // namespace mc::protocol::server::login
