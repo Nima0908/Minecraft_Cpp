@@ -1,14 +1,13 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
 #include <SDL2/SDL_vulkan.h>
 
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 #include <vector>
 #include <vulkan/vulkan_core.h>
-#include <optional>
 
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
@@ -42,6 +41,11 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance,
   }
 }
 
+struct QueueFamilyIndices {
+    std::optional<uint32_t> graphicsFamily;
+    bool isComplete() const { return graphicsFamily.has_value(); }
+  };
+
 class HelloTriangleApplication {
 public:
   void run() {
@@ -52,10 +56,32 @@ public:
   }
 
 private:
+  void initWindow() {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+      throw std::runtime_error(std::string("Failed to initialize SDL: ") +
+                               SDL_GetError());
+    }
+
+    window = SDL_CreateWindow("Minecraft C++", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
+                              SDL_WINDOW_VULKAN);
+
+    if (!window) {
+      throw std::runtime_error(std::string("Failed to create SDL window: ") +
+                               SDL_GetError());
+    }
+  }
+
+  void initVulkan() {
+    createInstance();
+    setupDebugMessenger();
+    pickPhysicalDevice();
+    createLogicalDevice();
+  }
+
   void createInstance() {
     if (enableValidationLayers && !checkValidationLayerSupport()) {
-      throw std::runtime_error(
-          "validation layers requested, but not available!");
+      throw std::runtime_error("validation layers requested, but not available!");
     }
 
     VkApplicationInfo appInfo{};
@@ -80,8 +106,7 @@ private:
     createInfo.ppEnabledExtensionNames = extensions.data();
 
     if (enableValidationLayers) {
-      createInfo.enabledLayerCount =
-          static_cast<uint32_t>(validationLayers.size());
+      createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
       createInfo.ppEnabledLayerNames = validationLayers.data();
       createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debugCreateInfo;
     } else {
@@ -92,59 +117,6 @@ private:
     if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
       throw std::runtime_error("failed to create instance!");
     }
-  }
-
-  void initWindow() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-      throw std::runtime_error(std::string("Failed to initialize SDL: ") +
-                               SDL_GetError());
-    }
-
-    window = SDL_CreateWindow("Minecraft C++", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
-                              SDL_WINDOW_VULKAN);
-
-    if (!window) {
-      throw std::runtime_error(std::string("Failed to create SDL window: ") +
-                               SDL_GetError());
-    }
-  }
-
-  void initVulkan() {
-    createInstance();
-    setupDebugMessenger();
-    pickPhysicalDevice();
-  }
-
-  void pickPhysicalDevice() {
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    uint32_t deviceCount = 0;
-    vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-
-    if (deviceCount == 0) {
-    throw std::runtime_error("failed to find GPUs with Vulkan support!");
-    }
-    
-    std::vector<VkPhysicalDevice> devices(deviceCount);
-    vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
-
-    for (const auto& device : devices) {
-        if (isDeviceSuitable(device)) {
-            physicalDevice = device;
-            break;
-        }
-    }
-
-    if (physicalDevice == VK_NULL_HANDLE) {
-        throw std::runtime_error("failed to find a suitable GPU!");
-      }
-
-  }
-
-  bool isDeviceSuitable(VkPhysicalDevice device) {
-    QueueFamilyIndices indices = findQueueFamilies(device);
-
-    return indices.graphicsFamily.has_value();
   }
 
   void populateDebugMessengerCreateInfo(
@@ -169,41 +141,119 @@ private:
     VkDebugUtilsMessengerCreateInfoEXT createInfo;
     populateDebugMessengerCreateInfo(createInfo);
 
-    if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr,
-                                     &debugMessenger) != VK_SUCCESS) {
+    if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
       throw std::runtime_error("failed to set up debug messenger!");
     }
   }
 
-  void mainLoop() {
-    bool running = true;
-    SDL_Event event;
+  void pickPhysicalDevice() {
+    uint32_t deviceCount = 0;
+    vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
-    while (running) {
-      while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-          running = false;
-        }
+    if (deviceCount == 0) {
+      throw std::runtime_error("failed to find GPUs with Vulkan support!");
+    }
+
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+
+    for (const auto &deviceCandidate : devices) {
+      if (isDeviceSuitable(deviceCandidate)) {
+        physicalDevice = deviceCandidate; // <-- FIXED: assign to member, not local
+        break;
       }
-      // Rendering or update logic can go here
+    }
+
+    if (physicalDevice == VK_NULL_HANDLE) {
+      throw std::runtime_error("failed to find a suitable GPU!");
     }
   }
 
-  void cleanup() {
-    if (enableValidationLayers && debugMessenger != VK_NULL_HANDLE) {
-      DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+  bool isDeviceSuitable(VkPhysicalDevice device) {
+    QueueFamilyIndices indices = findQueueFamilies(device);
+    return indices.graphicsFamily.has_value();
+  }
+
+  void createLogicalDevice() {
+    if (physicalDevice == VK_NULL_HANDLE) {
+      throw std::runtime_error("Physical device is not selected!");
     }
 
-    if (instance != VK_NULL_HANDLE) {
-      vkDestroyInstance(instance, nullptr);
+    QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+    VkDeviceQueueCreateInfo queueCreateInfo{};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+    queueCreateInfo.queueCount = 1;
+
+    float queuePriority = 1.0f;
+    queueCreateInfo.pQueuePriorities = &queuePriority;
+
+    VkPhysicalDeviceFeatures deviceFeatures{};
+
+    VkDeviceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+    createInfo.pQueueCreateInfos = &queueCreateInfo;
+    createInfo.queueCreateInfoCount = 1;
+    createInfo.pEnabledFeatures = &deviceFeatures;
+
+    createInfo.enabledExtensionCount = 0;
+
+    if (enableValidationLayers) {
+      createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+      createInfo.ppEnabledLayerNames = validationLayers.data();
+    } else {
+      createInfo.enabledLayerCount = 0;
     }
 
-    if (window) {
-      SDL_DestroyWindow(window);
-      window = nullptr;
+    if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
+      throw std::runtime_error("failed to create logical device!");
     }
 
-    SDL_Quit();
+    vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+  }
+
+  QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+    QueueFamilyIndices indices;
+
+    uint32_t queueFamilyCount = 0;
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+    int i = 0;
+    for (const auto &queueFamily : queueFamilies) {
+      if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+        indices.graphicsFamily = i;
+      }
+
+      if (indices.isComplete()) {
+        break;
+      }
+
+      i++;
+    }
+
+    return indices;
+  }
+
+  std::vector<const char *> getRequiredExtensions() const {
+    unsigned int sdlExtensionCount = 0;
+    if (!SDL_Vulkan_GetInstanceExtensions(window, &sdlExtensionCount, nullptr)) {
+      throw std::runtime_error("Failed to get SDL Vulkan extensions count");
+    }
+
+    std::vector<const char *> extensions(sdlExtensionCount);
+    if (!SDL_Vulkan_GetInstanceExtensions(window, &sdlExtensionCount, extensions.data())) {
+      throw std::runtime_error("Failed to get SDL Vulkan extensions");
+    }
+
+    if (enableValidationLayers) {
+      extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+    }
+
+    return extensions;
   }
 
   bool checkValidationLayerSupport() {
@@ -230,74 +280,58 @@ private:
     return true;
   }
 
-  std::vector<const char *> getRequiredExtensions() const {
-    unsigned int sdlExtensionCount = 0;
-    if (!SDL_Vulkan_GetInstanceExtensions(window, &sdlExtensionCount,
-                                          nullptr)) {
-      throw std::runtime_error("Failed to get SDL Vulkan extensions count");
-    }
-
-    std::vector<const char *> extensions(sdlExtensionCount);
-    if (!SDL_Vulkan_GetInstanceExtensions(window, &sdlExtensionCount,
-                                          extensions.data())) {
-      throw std::runtime_error("Failed to get SDL Vulkan extensions");
-    }
-
-    if (enableValidationLayers) {
-      extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-    }
-
-    return extensions;
-  }
-
-  struct QueueFamilyIndices {
-    std::optional<uint32_t> graphicsFamily;
-
-    bool isComplete() {
-        return graphicsFamily.has_value();
-    }
-  };
-
-  QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
-      QueueFamilyIndices indices;
-      // Logic to find queue family indices to populate struct with
-      uint32_t queueFamilyCount = 0;
-      vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-
-      std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-      vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
-      
-      int i = 0;
-      for (const auto& queueFamily : queueFamilies) {
-          if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-              indices.graphicsFamily = i;
-          }
-
-          if (indices.isComplete()) {
-            break;
-          }
-
-          i++;
-      }
-
-      return indices;
-  }
-
-  static VKAPI_ATTR VkBool32 VKAPI_CALL
-  debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-                VkDebugUtilsMessageTypeFlagsEXT messageType,
-                const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
-                void *pUserData) {
-
+  static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+      VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+      VkDebugUtilsMessageTypeFlagsEXT messageType,
+      const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+      void *pUserData) {
     std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
     return VK_FALSE;
   }
 
+  void mainLoop() {
+    bool running = true;
+    SDL_Event event;
+
+    while (running) {
+      while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+          running = false;
+        }
+      }
+      // Rendering or update logic would go here
+    }
+  }
+
+  void cleanup() {
+    if (device != VK_NULL_HANDLE) {
+      vkDestroyDevice(device, nullptr);
+    }
+
+    if (enableValidationLayers && debugMessenger != VK_NULL_HANDLE) {
+      DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+    }
+
+    if (instance != VK_NULL_HANDLE) {
+      vkDestroyInstance(instance, nullptr);
+    }
+
+    if (window) {
+      SDL_DestroyWindow(window);
+    }
+
+    SDL_Quit();
+  }
+
 private:
+
   VkInstance instance = VK_NULL_HANDLE;
   VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
+  VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+  VkDevice device = VK_NULL_HANDLE;
+  VkQueue graphicsQueue = VK_NULL_HANDLE;
   SDL_Window *window = nullptr;
+
   const uint32_t WIDTH = 800;
   const uint32_t HEIGHT = 600;
 };
@@ -532,7 +566,7 @@ bool processLoginPacket(mc::network::Socket &socket, const std::string &mcToken,
     mc::utils::log(mc::utils::LogLevel::ERROR,
                    "Disconnected: " + disconnect.reason);
     return false;
-  }
+  }vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
 
   case LoginPacketId::ENCRYPTION_REQUEST:
     handleEncryptionRequest(socket, reader, mcToken, minecraftUUID);
