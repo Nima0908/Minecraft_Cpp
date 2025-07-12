@@ -14,6 +14,8 @@ public:
   std::string username;
   std::array<uint8_t, 16> uuid;
 
+  LoginStart() : username(""), uuid{} {}
+
   LoginStart(const std::string &user, const std::array<uint8_t, 16> &uuidBytes)
       : username(user), uuid(uuidBytes) {}
 

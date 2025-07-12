@@ -10,6 +10,8 @@ namespace mc::protocol::client::login {
 
 class EncryptionResponse : public Packet {
 public:
+  EncryptionResponse() : encryptedSecret_{}, encryptedToken_{} {}
+
   EncryptionResponse(const std::vector<uint8_t> &encryptedSecret,
                      const std::vector<uint8_t> &encryptedToken)
       : encryptedSecret_(encryptedSecret), encryptedToken_(encryptedToken) {}

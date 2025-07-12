@@ -8,6 +8,7 @@
 #include "buffer/write_buffer.hpp"
 #include "crypto/aes_cipher.hpp"
 #include "crypto/encryption.hpp"
+#include "handler/packet_handler.hpp"
 #include "network/socket.hpp"
 #include "protocol/client/handshaking/handshake.hpp"
 #include "protocol/client/login/encryption_response.hpp"
@@ -125,23 +126,20 @@ ServerConnection getServerDetails() {
 void sendHandshakeAndLogin(network::Socket &socket,
                            const ServerConnection &connection,
                            const std::string &minecraftUUID) {
-  {
-    mc::buffer::WriteBuffer write;
-    protocol::client::handshaking::HandshakePacket handshake(
-        PROTOCOL_VERSION, connection.address, connection.port, LOGIN_STATE);
-    socket.sendPacket(handshake.serialize(write));
-    utils::log(utils::LogLevel::DEBUG, "Sent handshake packet");
-  }
+  mc::handler::PacketHandler handler(socket);
 
-  {
-    std::array<uint8_t, 16> uuidBytes = utils::parseDashlessUUID(minecraftUUID);
-    mc::buffer::WriteBuffer write;
-    protocol::client::login::LoginStart loginStart(connection.username,
-                                                   uuidBytes);
-    socket.sendPacket(loginStart.serialize(write));
-    utils::log(utils::LogLevel::DEBUG,
-               "Sent login start packet with username: " + connection.username);
-  }
+  handler.sendPacket<mc::protocol::client::handshaking::HandshakePacket>(
+      PROTOCOL_VERSION, connection.address, connection.port, LOGIN_STATE);
+
+  utils::log(utils::LogLevel::DEBUG, "Sent handshake packet");
+
+  std::array<uint8_t, 16> uuidBytes = utils::parseDashlessUUID(minecraftUUID);
+  mc::buffer::WriteBuffer write;
+  protocol::client::login::LoginStart loginStart(connection.username,
+                                                 uuidBytes);
+  socket.sendPacket(loginStart.serialize(write));
+  utils::log(utils::LogLevel::DEBUG,
+             "Sent login start packet with username: " + connection.username);
 }
 
 void handleEncryptionRequest(network::Socket &socket, buffer::ReadBuffer &read,
@@ -270,6 +268,16 @@ int main() {
                "Connected to server " + connection.address);
 
     sendHandshakeAndLogin(socket, connection, tokens.minecraftUUID);
+
+    // === TEST PACKET HANDLER RECEIVING PACKET ===
+    /*{
+      mc::handler::PacketHandler handler(socket);
+      handler.currentState = mc::protocol::PacketState::Login; // Set
+    appropriate state
+
+      handler.recievePacket(socket);  // Pass connected socket
+    }*/
+    // ============================================
 
     if (!processLoginPacket(socket, tokens.mcToken, tokens.minecraftUUID))
       return 1;
