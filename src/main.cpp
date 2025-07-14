@@ -1,3 +1,4 @@
+#include "main.hpp"
 #include "authenticate/auth_device_code.hpp"
 #include "authenticate/auth_minecraft.hpp"
 #include "authenticate/auth_session.hpp"
@@ -28,9 +29,6 @@
 #include <vector>
 
 constexpr const char *CLIENT_ID = "757bb3b3-b7ca-4bcd-a160-c92e6379c263";
-constexpr int DEFAULT_PORT = 25565;
-constexpr int PROTOCOL_VERSION = 770;
-constexpr int LOGIN_STATE = 2;
 
 using namespace mc;
 
@@ -39,21 +37,6 @@ enum class LoginPacketId : int {
   ENCRYPTION_REQUEST = 0x01,
   LOGIN_SUCCESS = 0x02,
   LOGIN_COMPRESSION = 0x03
-};
-
-struct AuthTokens {
-  std::string msToken;
-  std::string xblToken;
-  std::string xstsToken;
-  std::string mcToken;
-  std::string userhash;
-  std::string minecraftUUID;
-};
-
-struct ServerConnection {
-  std::string address;
-  std::string username;
-  int port = DEFAULT_PORT;
 };
 
 std::string getOrCreateToken(const std::string &filename,
@@ -257,6 +240,9 @@ bool processPostEncryptionPackets(network::Socket &socket) {
   }
 }
 
+#include <chrono>
+#include <thread>
+
 int main() {
   try {
     AuthTokens tokens = performAuthentication();
@@ -267,30 +253,13 @@ int main() {
     utils::log(utils::LogLevel::DEBUG,
                "Connected to server " + connection.address);
 
-    sendHandshakeAndLogin(socket, connection, tokens.minecraftUUID);
+    mc::handler::PacketHandler handler(socket);
+    handler.initialize(connection, tokens.minecraftUUID);
+    handler.startReceiving();
 
-    // === TEST PACKET HANDLER RECEIVING PACKET ===
-    /*{
-      mc::handler::PacketHandler handler(socket);
-      handler.currentState = mc::protocol::PacketState::Login; // Set
-    appropriate state
-
-      handler.recievePacket(socket);  // Pass connected socket
-    }*/
-    // ============================================
-
-    if (!processLoginPacket(socket, tokens.mcToken, tokens.minecraftUUID))
-      return 1;
-    if (!processPostEncryptionPackets(socket))
-      return 1;
-
-    protocol::client::login::LoginAcknowledged loginAck;
-    mc::buffer::WriteBuffer write;
-    socket.sendPacket(loginAck.serialize(write));
-    utils::log(utils::LogLevel::DEBUG, "Sent login acknowledgment");
-
-    utils::log(utils::LogLevel::INFO, "Successfully logged into the server!");
-    return 0;
+    while (true) {
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 
   } catch (const std::exception &e) {
     utils::log(utils::LogLevel::ERROR, e.what());

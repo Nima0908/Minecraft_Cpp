@@ -1,5 +1,5 @@
 #pragma once
 
 namespace mc::protocol {
-enum class PacketDirection { Server, Client };
+enum class PacketDirection { Serverbound, Clientbound };
 }

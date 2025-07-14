@@ -1,11 +1,10 @@
 #pragma once
 #include "../buffer/write_buffer.hpp"
+#include "packet_direction.hpp"
 #include <cstdint>
 #include <vector>
 
 namespace mc::protocol {
-
-enum class PacketDirection { Clientbound, Serverbound };
 
 class Packet {
 public:
