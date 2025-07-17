@@ -2,6 +2,7 @@
 #include "../buffer/read_buffer.hpp"
 #include "../buffer/write_buffer.hpp"
 #include "../util/compression_util.hpp"
+#include "../util/logger.hpp"
 #include <stdexcept>
 
 namespace mc::network {

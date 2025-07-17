@@ -254,7 +254,7 @@ int main() {
                "Connected to server " + connection.address);
 
     mc::handler::PacketHandler handler(socket);
-    handler.initialize(connection, tokens.minecraftUUID);
+    handler.initialize(connection, tokens.minecraftUUID, tokens.mcToken);
     handler.startReceiving();
 
     while (true) {

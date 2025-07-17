@@ -22,6 +22,7 @@ public:
   uint8_t readByte();
   int32_t readVarInt();
   uint16_t readUInt16();
+  int64_t readLong();
   std::string readString();
   ByteArray readByteArray();
   ByteArray copyRemaining() const;

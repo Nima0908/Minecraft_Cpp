@@ -18,7 +18,8 @@ public:
   explicit PacketHandler(mc::network::Socket &sock);
   ~PacketHandler();
 
-  void initialize(const ServerConnection &conn, const std::string &uuid);
+  void initialize(const ServerConnection &conn, const std::string &uuid,
+                  const std::string &token);
 
   void startReceiving();
   void stopReceiving();
@@ -36,6 +37,7 @@ private:
   mc::network::Socket &socket;
   ServerConnection connection;
   std::string minecraftUUID;
+  std::string mcToken;
 
   // === Threading ===
   std::thread receiveThread;

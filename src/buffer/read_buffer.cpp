@@ -47,6 +47,18 @@ uint16_t ReadBuffer::readUInt16() {
   return val;
 }
 
+int64_t ReadBuffer::readLong() {
+  if (!ensure(8))
+    throw std::runtime_error("Long read out of bounds");
+
+  int64_t value = 0;
+  for (int i = 0; i < 8; ++i) {
+    value <<= 8;
+    value |= data_[readPos_++];
+  }
+  return value;
+}
+
 std::string ReadBuffer::readString() {
   int len = readVarInt();
   if (!ensure(len))

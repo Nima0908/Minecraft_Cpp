@@ -4,9 +4,11 @@
 #include "../util/logger.hpp"
 #include "../util/uuid_utils.hpp" // for formatUUIDFromBytes if needed
 #include "stages/handshake_handler.hpp"
+#include "stages/login_handler.hpp"
 
 #include <chrono>
 #include <memory>
+#include <string>
 #include <thread>
 #include <typeinfo>
 
@@ -18,9 +20,11 @@ PacketHandler::~PacketHandler() { stopReceiving(); }
 
 // === Set Connection Info ===
 void PacketHandler::initialize(const ServerConnection &conn,
-                               const std::string &uuid) {
+                               const std::string &uuid,
+                               const std::string &token) {
   this->connection = conn;
   this->minecraftUUID = uuid;
+  this->mcToken = token;
 }
 
 // === Start/Stop Receiving Thread ===
@@ -120,7 +124,10 @@ void PacketHandler::handleGenericPacket() {
                  "Received packet of type: " +
                      std::string(typeid(*packet).name()));
 
-  // TODO: Dispatch or handle packet
+  if (currentState == mc::protocol::PacketState::Login) {
+    mc::handler::stages::LoginHandler login_handler;
+    login_handler.determinePacket(socket, packet, mcToken, minecraftUUID);
+  }
 }
 
 // === FACTORY LOOKUP ===

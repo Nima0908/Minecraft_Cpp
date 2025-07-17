@@ -26,6 +26,7 @@ public:
   // Primitives
   void writeVarInt(int32_t value);
   void writeUInt16(uint16_t value);
+  void writeLong(int64_t value);
   void writeString(const std::string &str);
   void writeByteArray(const ByteArray &bytes);
 };

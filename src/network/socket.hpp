@@ -15,6 +15,8 @@ public:
   Socket();
   ~Socket();
 
+  void cancel();
+
   void connect(const std::string &host, int port);
   void enableEncryption(std::shared_ptr<mc::crypto::AESCipher> cipher);
   void sendPacket(const std::vector<uint8_t> &rawData);

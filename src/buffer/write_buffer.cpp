@@ -42,6 +42,14 @@ void WriteBuffer::writeUInt16(uint16_t value) {
   writeBytes({(uint8_t)(value >> 8), (uint8_t)(value & 0xFF)});
 }
 
+void WriteBuffer::writeLong(int64_t value) {
+  ByteArray buf(8);
+  for (int i = 7; i >= 0; --i) {
+    buf[7 - i] = static_cast<uint8_t>((value >> (i * 8)) & 0xFF);
+  }
+  writeBytes(buf);
+}
+
 void WriteBuffer::writeString(const std::string &str) {
   writeVarInt(static_cast<int32_t>(str.size()));
   writeBytes(ByteArray(str.begin(), str.end()));
