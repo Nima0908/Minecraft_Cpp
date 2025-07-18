@@ -12,6 +12,8 @@ public:
   PingRequest() : timestamp_(0) {}
   explicit PingRequest(int64_t timestamp) : timestamp_(timestamp) {}
 
+  int64_t timestamp_;
+
   uint32_t getPacketID() const override { return 0x01; }
 
   PacketDirection getDirection() const override {
@@ -27,8 +29,5 @@ public:
   void read(mc::buffer::ReadBuffer &) override {
     // Not used for serverbound packet
   }
-
-private:
-  int64_t timestamp_;
 };
 } // namespace mc::protocol::client::status

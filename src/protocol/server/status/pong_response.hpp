@@ -10,6 +10,8 @@ class PongResponse : public Packet {
 public:
   PongResponse() : timestamp_(0) {}
 
+  int64_t timestamp_;
+
   uint32_t getPacketID() const override { return 0x01; }
 
   PacketDirection getDirection() const override {
@@ -23,9 +25,6 @@ public:
   void read(mc::buffer::ReadBuffer &buf) override {
     timestamp_ = buf.readLong(); // Assumes 64-bit signed integer
   }
-
-private:
-  int64_t timestamp_;
 };
 
 } // namespace mc::protocol::server::status

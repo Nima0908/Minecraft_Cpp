@@ -7,21 +7,19 @@
 #include <string>
 #include <vector>
 
-namespace mc::protocol::server::login {
+namespace mc::protocol::client::configuration {
 
-class CustomQuery : public Packet {
+class CustomPayload : public Packet {
 public:
-  CustomQuery() : messageID_(0), channel_(""), data_() {}
+  CustomPayload() : channel_(""), data_() {}
 
-  CustomQuery(int32_t messageID, const std::string &channel,
-              const std::vector<uint8_t> &data)
-      : messageID_(messageID), channel_(channel), data_(data) {}
+  CustomPayload(const std::string &channel, const std::vector<uint8_t> &data)
+      : channel_(channel), data_(data) {}
 
-  int32_t messageID_;
   std::string channel_;
   std::vector<uint8_t> data_;
 
-  uint32_t getPacketID() const override { return 0x04; }
+  uint32_t getPacketID() const override { return 0x01; }
 
   PacketDirection getDirection() const override {
     return PacketDirection::Serverbound;
@@ -29,14 +27,12 @@ public:
 
   std::vector<uint8_t> serialize(mc::buffer::WriteBuffer &buf) const override {
     buf.writeVarInt(getPacketID());
-    buf.writeVarInt(messageID_);
     buf.writeString(channel_);
     buf.writeByteArray(data_);
     return buf.compile();
   }
 
   void read(mc::buffer::ReadBuffer &buf) override {
-    messageID_ = buf.readVarInt();
     channel_ = buf.readString();
 
     // Calculate how many bytes are left in the buffer
@@ -49,4 +45,4 @@ public:
   }
 };
 
-} // namespace mc::protocol::server::login
+} // namespace mc::protocol::client::configuration

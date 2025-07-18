@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-namespace mc::protocol::server::login {
+namespace mc::protocol::client::configuration {
 
 class CookieRequest : public Packet {
 public:
@@ -17,7 +17,7 @@ public:
 
   std::string identifier_;
 
-  uint32_t getPacketID() const override { return 0x05; }
+  uint32_t getPacketID() const override { return 0x00; }
 
   PacketDirection getDirection() const override {
     return PacketDirection::Serverbound;
@@ -34,4 +34,4 @@ public:
   }
 };
 
-} // namespace mc::protocol::server::login
+} // namespace mc::protocol::client::configuration

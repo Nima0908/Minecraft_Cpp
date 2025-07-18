@@ -1,9 +1,11 @@
 #pragma once
 #include "types.hpp"
 #include <cstddef>
+#include <cstring>
 #include <stdexcept>
-#include <string.h>
+#include <string>
 #include <type_traits>
+#include <vector>
 
 namespace mc::buffer {
 
@@ -20,9 +22,16 @@ public:
   bool ensure(size_t len) const;
   ByteArray readBytes(size_t len);
   uint8_t readByte();
-  int32_t readVarInt();
+  int8_t readInt8();
+  bool readBool();
+  int16_t readInt16();
+  int32_t readInt32();
   uint16_t readUInt16();
+  uint32_t readUInt32();
+  int32_t readVarInt();
   int64_t readLong();
+  float readFloat();
+  double readDouble();
   std::string readString();
   ByteArray readByteArray();
   ByteArray copyRemaining() const;
@@ -30,14 +39,13 @@ public:
   const ByteArray &data() const;
 };
 
-// Template must remain in the header
 template <typename T> T ReadBuffer::read() {
   static_assert(std::is_trivially_copyable_v<T>,
                 "Only trivial types supported");
   if (!ensure(sizeof(T)))
     throw std::runtime_error("Generic read out of bounds");
   T val;
-  memcpy(&val, &data_[readPos_], sizeof(T));
+  std::memcpy(&val, &data_[readPos_], sizeof(T));
   readPos_ += sizeof(T);
   return val;
 }

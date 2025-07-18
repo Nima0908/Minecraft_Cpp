@@ -2,9 +2,10 @@
 #include "../buffer/read_buffer.hpp"
 #include "../protocol/packet_registry.hpp"
 #include "../util/logger.hpp"
-#include "../util/uuid_utils.hpp" // for formatUUIDFromBytes if needed
+#include "../util/uuid_util.hpp" // for formatUUIDFromBytes if needed
 #include "stages/handshake_handler.hpp"
 #include "stages/login_handler.hpp"
+#include "stages/status_handler.hpp"
 
 #include <chrono>
 #include <memory>
@@ -127,6 +128,11 @@ void PacketHandler::handleGenericPacket() {
   if (currentState == mc::protocol::PacketState::Login) {
     mc::handler::stages::LoginHandler login_handler;
     login_handler.determinePacket(socket, packet, mcToken, minecraftUUID);
+  }
+
+  if (currentState == mc::protocol::PacketState::Status) {
+    mc::handler::stages::StatusHandler status_handler;
+    status_handler.determinePacket(packet, read);
   }
 }
 

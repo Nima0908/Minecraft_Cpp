@@ -1,5 +1,6 @@
 #include "read_buffer.hpp"
 #include <cstring>
+#include <limits>
 #include <stdexcept>
 
 namespace mc::buffer {
@@ -24,19 +25,30 @@ uint8_t ReadBuffer::readByte() {
   return data_[readPos_++];
 }
 
-int32_t ReadBuffer::readVarInt() {
-  int32_t result = 0;
-  int numRead = 0;
-  uint8_t byte;
-  do {
-    if (!ensure(1))
-      throw std::runtime_error("VarInt read out of bounds");
-    byte = data_[readPos_++];
-    result |= (byte & 0x7F) << (7 * numRead);
-    if (++numRead > 5)
-      throw std::runtime_error("VarInt too big");
-  } while (byte & 0x80);
-  return result;
+int8_t ReadBuffer::readInt8() {
+  if (!ensure(1))
+    throw std::runtime_error("Int8 read out of bounds");
+  return static_cast<int8_t>(data_[readPos_++]);
+}
+
+bool ReadBuffer::readBool() { return readByte() != 0; }
+
+int16_t ReadBuffer::readInt16() {
+  if (!ensure(2))
+    throw std::runtime_error("Int16 read out of bounds");
+  int16_t val = (data_[readPos_] << 8) | data_[readPos_ + 1];
+  readPos_ += 2;
+  return val;
+}
+
+int32_t ReadBuffer::readInt32() {
+  if (!ensure(4))
+    throw std::runtime_error("Int32 read out of bounds");
+  int32_t val = 0;
+  for (int i = 0; i < 4; ++i) {
+    val = (val << 8) | data_[readPos_++];
+  }
+  return val;
 }
 
 uint16_t ReadBuffer::readUInt16() {
@@ -47,6 +59,33 @@ uint16_t ReadBuffer::readUInt16() {
   return val;
 }
 
+uint32_t ReadBuffer::readUInt32() {
+  if (!ensure(4))
+    throw std::runtime_error("UInt32 read out of bounds");
+  uint32_t val = 0;
+  for (int i = 0; i < 4; ++i) {
+    val = (val << 8) | data_[readPos_++];
+  }
+  return val;
+}
+
+int32_t ReadBuffer::readVarInt() {
+  int32_t result = 0;
+  int numRead = 0;
+  uint8_t byte;
+
+  do {
+    if (!ensure(1))
+      throw std::runtime_error("VarInt read out of bounds");
+    byte = data_[readPos_++];
+    result |= (byte & 0x7F) << (7 * numRead);
+    if (++numRead > 5)
+      throw std::runtime_error("VarInt too big");
+  } while (byte & 0x80);
+
+  return result;
+}
+
 int64_t ReadBuffer::readLong() {
   if (!ensure(8))
     throw std::runtime_error("Long read out of bounds");
@@ -54,10 +93,14 @@ int64_t ReadBuffer::readLong() {
   int64_t value = 0;
   for (int i = 0; i < 8; ++i) {
     value <<= 8;
-    value |= data_[readPos_++];
+    value |= static_cast<uint8_t>(data_[readPos_++]);
   }
   return value;
 }
+
+float ReadBuffer::readFloat() { return read<float>(); }
+
+double ReadBuffer::readDouble() { return read<double>(); }
 
 std::string ReadBuffer::readString() {
   int len = readVarInt();

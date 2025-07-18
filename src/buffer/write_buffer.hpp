@@ -1,6 +1,8 @@
 #pragma once
 #include "types.hpp"
 #include <cstddef>
+#include <cstdint>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -23,15 +25,20 @@ public:
   ByteArray compile() const;
   void clear();
 
-  // Primitives
-  void writeVarInt(int32_t value);
+  void writeBool(bool value);
+  void writeInt8(int8_t value);
+  void writeInt16(int16_t value);
+  void writeInt32(int32_t value);
   void writeUInt16(uint16_t value);
+  void writeUInt32(uint32_t value);
   void writeLong(int64_t value);
+  void writeFloat(float value);
+  void writeDouble(double value);
+  void writeVarInt(int32_t value);
   void writeString(const std::string &str);
   void writeByteArray(const ByteArray &bytes);
 };
 
-// Template implementations must go in the header!
 template <typename T> void WriteBuffer::write(const T &value) {
   static_assert(std::is_trivially_copyable_v<T>,
                 "Only trivial types supported");

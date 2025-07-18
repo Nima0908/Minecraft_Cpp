@@ -20,7 +20,7 @@
 #include "protocol/server/login/login_disconnect.hpp"
 #include "protocol/server/login/login_finished.hpp"
 #include "util/logger.hpp"
-#include "util/uuid_utils.hpp"
+#include "util/uuid_util.hpp"
 
 #include <curl/curl.h>
 #include <iostream>

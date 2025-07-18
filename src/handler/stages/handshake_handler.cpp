@@ -3,7 +3,7 @@
 #include "../../protocol/client/handshaking/handshake.hpp"
 #include "../../protocol/client/login/login_start.hpp"
 #include "../../util/logger.hpp"
-#include "../../util/uuid_utils.hpp"
+#include "../../util/uuid_util.hpp"
 #include "../packet_handler.hpp"
 
 namespace mc::handler::stages {
