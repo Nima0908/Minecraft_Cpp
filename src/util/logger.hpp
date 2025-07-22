@@ -1,31 +1,44 @@
 #pragma once
+
+#include "log_level.hpp"
 #include <iostream>
 
 namespace mc::utils {
 
-enum class LogLevel { INFO, WARN, ERROR, DEBUG };
+#if defined(MC_ENABLE_LOGGING)
 
-inline constexpr const char *RESET = "\033[0m";
-inline constexpr const char *RED = "\033[31m";
+inline constexpr const char *RESET  = "\033[0m";
+inline constexpr const char *RED    = "\033[31m";
 inline constexpr const char *YELLOW = "\033[33m";
-inline constexpr const char *GREEN = "\033[32m";
-inline constexpr const char *CYAN = "\033[36m";
+inline constexpr const char *GREEN  = "\033[32m";
+inline constexpr const char *CYAN   = "\033[36m";
 
-inline void log(LogLevel level, const std::string &message) {
+template <typename... Args>
+void log(LogLevel level, Args&&... args) {
+  std::ostream* out = &std::cout;
+  const char* color = "";
+  const char* prefix = "";
+
   switch (level) {
-  case LogLevel::INFO:
-    std::cout << GREEN << "[INFO]  " << RESET << message << "\n";
-    break;
-  case LogLevel::WARN:
-    std::cout << YELLOW << "[WARN]  " << RESET << message << "\n";
-    break;
-  case LogLevel::ERROR:
-    std::cerr << RED << "[ERROR] " << RESET << message << "\n";
-    break;
-  case LogLevel::DEBUG:
-    std::cout << CYAN << "[DEBUG] " << RESET << message << "\n";
-    break;
+    case LogLevel::INFO:
+      color = GREEN; prefix = "[INFO]  "; break;
+    case LogLevel::WARN:
+      color = YELLOW; prefix = "[WARN]  "; break;
+    case LogLevel::ERROR:
+      out = &std::cerr; color = RED; prefix = "[ERROR] "; break;
+    case LogLevel::DEBUG:
+      color = CYAN; prefix = "[DEBUG] "; break;
   }
+
+  *out << color << prefix << RESET;
+  ((*out << std::forward<Args>(args)), ...) << '\n';
 }
+
+#else
+
+template <typename... Args>
+inline void log(LogLevel, Args&&...) {}
+
+#endif
 
 } // namespace mc::utils

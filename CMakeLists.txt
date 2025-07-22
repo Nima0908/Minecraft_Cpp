@@ -4,6 +4,9 @@ project(MinecraftClient LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#Compiletime definition
+add_compile_definitions(MC_ENABLE_LOGGING)
+
 # IDE folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
