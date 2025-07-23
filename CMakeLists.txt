@@ -1,28 +1,19 @@
 cmake_minimum_required(VERSION 3.14)
 project(MinecraftClient LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#Compiletime definition
+# Compiletime definition
 add_compile_definitions(MC_ENABLE_LOGGING)
 
 # IDE folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Find dependencies
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system json)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
-
-# Add nlohmann/json (header-only library)
-include(FetchContent)
-FetchContent_Declare(
-    json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.11.2
-)
-FetchContent_MakeAvailable(json)
 
 # Add source files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
@@ -36,15 +27,14 @@ add_executable(mc_client ${SOURCES})
 # Include directories
 target_include_directories(mc_client PRIVATE
     ${Boost_INCLUDE_DIRS}
-    ${CURL_INCLUDE_DIRS}
 )
 
 # Link libraries
 target_link_libraries(mc_client
     PRIVATE
         Boost::system
+        Boost::json
         OpenSSL::SSL
         OpenSSL::Crypto
         ZLIB::ZLIB
-        nlohmann_json::nlohmann_json
 )

@@ -1,10 +1,9 @@
-// auth_manager.hpp
 #pragma once
 
 #include "../network/http/http_handler.hpp"
 #include <boost/asio.hpp>
+#include <boost/json.hpp>
 #include <chrono>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
 #include <utility>
@@ -79,7 +78,7 @@ private:
 
   std::string client_id;
   std::string token_file;
-  mc::network::http::HttpHandler *http_handler; // now a pointer
+  mc::network::http::HttpHandler *http_handler;
 
   std::optional<AuthTokens> tokens;
 };
