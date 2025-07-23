@@ -1,22 +1,35 @@
 #include "authenticate/auth_manager.hpp"
+#include "network/network_manager.hpp"
+#include "threading/thread_manager.hpp"
 #include "util/log_level.hpp"
 #include "util/logger.hpp"
 
+#include <boost/asio/io_context.hpp>
 #include <stdint.h>
 
+int main(int argc, char *argv[]) {
+  boost::asio::io_context ioc;
+  mc::network::NetworkManager networkMgr;
+  mc::threading::ThreadManager threadMgr;
 
-int main (int argc, char *argv[]) {
+  threadMgr.submitToDedicated("Networking", [&ioc]() { ioc.run(); });
+
+  networkMgr.start(ioc);
+
   constexpr const char *CLIENT_ID = "757bb3b3-b7ca-4bcd-a160-c92e6379c263";
-  mc::auth::AuthManager auth(CLIENT_ID, "minecraft_tokens.json");
-    
-    // Authenticate - this will:
-    // 1. Check for existing token file
-    // 2. If found, check if tokens are expired
-    // 3. If expired, try to refresh using refresh token
-    // 4. If refresh fails or no tokens exist, start new device code flow
-    if (!auth.authenticate()) {
-        mc::utils::log(mc::utils::LogLevel::ERROR, "Authentication failed");
-        return 1;
-    } 
+
+  auto *httpHandler = networkMgr.getHttpHandler();
+  if (!httpHandler) {
+    mc::utils::log(mc::utils::LogLevel::ERROR,
+                   "HttpHandler not available from NetworkManager");
+    return 1;
+  }
+
+  mc::auth::AuthManager auth_manager(CLIENT_ID, "tokens.json", httpHandler);
+
+  if (auth_manager.authenticate()) {
+    auth_manager.joinServer("server-hash");
+  }
+
   return 0;
 }
