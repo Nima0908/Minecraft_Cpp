@@ -31,5 +31,9 @@ int main(int argc, char *argv[]) {
     auth_manager.joinServer("server-hash");
   }
 
+  networkMgr.stop();
+
+  threadMgr.stop();
+
   return 0;
 }
