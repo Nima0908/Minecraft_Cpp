@@ -19,7 +19,6 @@ HttpHandler::HttpHandler(net::io_context &ioc)
 HttpHandler::UrlParts HttpHandler::parseUrl(const std::string &url) {
   UrlParts parts;
 
-  // Find scheme
   auto scheme_pos = url.find("://");
   if (scheme_pos == std::string::npos) {
     mc::utils::log(mc::utils::LogLevel::ERROR, "Invalid URL format: ", url);
@@ -29,13 +28,11 @@ HttpHandler::UrlParts HttpHandler::parseUrl(const std::string &url) {
   parts.scheme = url.substr(0, scheme_pos);
   auto remaining = url.substr(scheme_pos + 3);
 
-  // Find path
   auto path_pos = remaining.find('/');
   std::string host_port = remaining.substr(0, path_pos);
   parts.target =
       path_pos != std::string::npos ? remaining.substr(path_pos) : "/";
 
-  // Split host and port
   auto port_pos = host_port.find(':');
   if (port_pos != std::string::npos) {
     parts.host = host_port.substr(0, port_pos);
@@ -57,32 +54,26 @@ std::string HttpHandler::makeHttpsRequest(const std::string &host,
     tcp::resolver resolver(ioc_);
     beast::ssl_stream<beast::tcp_stream> stream(ioc_, sslCtx_);
 
-    // Set SNI hostname
     if (!SSL_set_tlsext_host_name(stream.native_handle(), host.c_str())) {
       mc::utils::log(mc::utils::LogLevel::ERROR, "Failed to set SNI hostname");
       throw std::runtime_error("SSL SNI setup failed");
     }
 
-    // Resolve and connect
     auto const results = resolver.resolve(host, "443");
     beast::get_lowest_layer(stream).connect(results);
 
-    // SSL handshake
     beast::get_lowest_layer(stream).expires_after(timeout_);
     stream.handshake(boost::asio::ssl::stream_base::client);
 
-    // Prepare HTTP request
     beast::http::request<beast::http::string_body> req{verb, target, 11};
     req.set(beast::http::field::host, host);
     req.set(beast::http::field::user_agent, userAgent_);
     req.set(beast::http::field::connection, "close");
 
-    // Add custom headers
     for (const auto &[key, value] : headers) {
       req.set(key, value);
     }
 
-    // Add body if present
     if (!body.empty()) {
       req.body() = body;
       req.prepare_payload();
@@ -91,11 +82,9 @@ std::string HttpHandler::makeHttpsRequest(const std::string &host,
     mc::utils::log(mc::utils::LogLevel::DEBUG, "Sending HTTPS ",
                    beast::http::to_string(verb), " request to ", host, target);
 
-    // Send request
     beast::get_lowest_layer(stream).expires_after(timeout_);
     beast::http::write(stream, req);
 
-    // Receive response
     beast::flat_buffer buffer;
     beast::http::response<beast::http::string_body> res;
     beast::get_lowest_layer(stream).expires_after(timeout_);
@@ -104,7 +93,6 @@ std::string HttpHandler::makeHttpsRequest(const std::string &host,
     mc::utils::log(mc::utils::LogLevel::DEBUG,
                    "Received HTTPS response with status: ", res.result_int());
 
-    // Check for server errors
     if (res.result() == beast::http::status::internal_server_error ||
         res.result() == beast::http::status::bad_gateway ||
         res.result() == beast::http::status::service_unavailable ||
@@ -115,7 +103,6 @@ std::string HttpHandler::makeHttpsRequest(const std::string &host,
                                std::to_string(res.result_int()));
     }
 
-    // Graceful shutdown
     beast::error_code ec;
     beast::get_lowest_layer(stream).expires_after(std::chrono::seconds(10));
     stream.shutdown(ec);
@@ -145,22 +132,18 @@ HttpHandler::makeHttpRequest(const std::string &host, const std::string &port,
     tcp::resolver resolver(ioc_);
     beast::tcp_stream stream(ioc_);
 
-    // Resolve and connect
     auto const results = resolver.resolve(host, port);
     stream.connect(results);
 
-    // Prepare HTTP request
     beast::http::request<beast::http::string_body> req{verb, target, 11};
     req.set(beast::http::field::host, host);
     req.set(beast::http::field::user_agent, userAgent_);
     req.set(beast::http::field::connection, "close");
 
-    // Add custom headers
     for (const auto &[key, value] : headers) {
       req.set(key, value);
     }
 
-    // Add body if present
     if (!body.empty()) {
       req.body() = body;
       req.prepare_payload();
@@ -170,11 +153,9 @@ HttpHandler::makeHttpRequest(const std::string &host, const std::string &port,
                    beast::http::to_string(verb), " request to ", host, ":",
                    port, target);
 
-    // Send request
     stream.expires_after(timeout_);
     beast::http::write(stream, req);
 
-    // Receive response
     beast::flat_buffer buffer;
     beast::http::response<beast::http::string_body> res;
     stream.expires_after(timeout_);
@@ -183,7 +164,6 @@ HttpHandler::makeHttpRequest(const std::string &host, const std::string &port,
     mc::utils::log(mc::utils::LogLevel::DEBUG,
                    "Received HTTP response with status: ", res.result_int());
 
-    // Check for server errors
     if (res.result() == beast::http::status::internal_server_error ||
         res.result() == beast::http::status::bad_gateway ||
         res.result() == beast::http::status::service_unavailable ||
@@ -194,7 +174,6 @@ HttpHandler::makeHttpRequest(const std::string &host, const std::string &port,
                                std::to_string(res.result_int()));
     }
 
-    // Graceful shutdown
     beast::error_code ec;
     stream.socket().shutdown(tcp::socket::shutdown_both, ec);
 
