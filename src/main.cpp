@@ -1,126 +1,111 @@
-#include "authenticate/auth_manager.hpp"
-#include "network/network_manager.hpp"
-#include "threading/thread_manager.hpp"
-#include "util/log_level.hpp"
-#include "util/logger.hpp"
-#include <boost/asio/io_context.hpp>
+#include <atomic>
 #include <chrono>
-#include <stdint.h>
-#include <string>
+#include <csignal>
+#include <iostream>
 #include <thread>
 
-int main(int argc, char *argv[]) {
-  boost::asio::io_context ioc;
-  mc::network::NetworkManager networkMgr;
-  mc::threading::ThreadManager threadMgr;
+#include "network/network_manager.hpp"
+#include "util/logger.hpp"
 
-  // Start the networking thread
-  threadMgr.submitToDedicated("Networking", [&ioc]() {
-    mc::utils::log(mc::utils::LogLevel::INFO, "Starting IO context");
-    ioc.run();
-  });
+namespace mc {
 
-  networkMgr.start(ioc);
+class MinecraftClient {
+public:
+  MinecraftClient() : should_stop_{false} {}
 
-  constexpr const char *CLIENT_ID = "757bb3b3-b7ca-4bcd-a160-c92e6379c263";
-  constexpr const char *SERVER_HOST = "localhost";
-  constexpr int SERVER_PORT = 25565;
+  void run() {
+    mc::utils::log(mc::utils::LogLevel::INFO, "MinecraftClient starting...");
 
-  // Get handlers
-  auto *httpHandler = networkMgr.getHttpHandler();
-  if (!httpHandler) {
-    mc::utils::log(mc::utils::LogLevel::ERROR,
-                   "HttpHandler not available from NetworkManager");
-    return 1;
+    networkMgr_.start(ioc_);
+    mc::utils::log(mc::utils::LogLevel::DEBUG, "NetworkManager started");
+
+    network_thread_ = std::thread([this]() {
+      mc::utils::log(mc::utils::LogLevel::INFO, "Networking thread started");
+      try {
+        ioc_.run();
+        mc::utils::log(mc::utils::LogLevel::INFO, "IO context finished");
+      } catch (const std::exception &e) {
+        mc::utils::log(mc::utils::LogLevel::ERROR,
+                       std::string("IO context error: ") + e.what());
+      }
+    });
+
+    auto tcpHandler = networkMgr_.getTcpHandler();
+    if (!tcpHandler) {
+      mc::utils::log(mc::utils::LogLevel::ERROR, "TCP handler not available");
+      return;
+    }
+
+    auto connection = tcpHandler->createConnection();
+
+    connection->setErrorCallback([](const boost::system::error_code &ec) {
+      mc::utils::log(mc::utils::LogLevel::ERROR,
+                     "Connection error: " + ec.message());
+    });
+
+    connection->setDataCallback([](mc::buffer::ReadBuffer &buffer) {
+      mc::utils::log(mc::utils::LogLevel::INFO, "Data received!");
+    });
+
+    connection->connect(
+        "127.0.0.1", "25565",
+        [connection](const boost::system::error_code &ec) {
+          if (ec) {
+            mc::utils::log(mc::utils::LogLevel::ERROR,
+                           "Failed to connect: " + ec.message());
+            return;
+          }
+
+          mc::utils::log(mc::utils::LogLevel::INFO, "Connected!");
+
+          connection->startReceiving();
+        });
+
+    waitForExit();
+
+    stop();
   }
 
-  auto *tcpHandler = networkMgr.getTcpHandler();
-  if (!tcpHandler) {
-    mc::utils::log(mc::utils::LogLevel::ERROR,
-                   "TcpHandler not available from NetworkManager");
-    return 1;
+  void stop() {
+    if (should_stop_.exchange(true))
+      return;
+
+    mc::utils::log(mc::utils::LogLevel::INFO, "Shutting down client");
+
+    ioc_.stop();
+    if (network_thread_.joinable())
+      network_thread_.join();
+
+    networkMgr_.stop();
+
+    mc::utils::log(mc::utils::LogLevel::INFO, "MinecraftClient exited cleanly");
   }
 
-  // Authenticate with Microsoft/Mojang
-  mc::auth::AuthManager auth_manager(CLIENT_ID, "tokens.json", httpHandler);
-  if (!auth_manager.authenticate()) {
-    mc::utils::log(mc::utils::LogLevel::ERROR, "Authentication failed");
-    networkMgr.stop();
-    threadMgr.stop();
-    return 1;
+private:
+  void waitForExit() {
+    mc::utils::log(mc::utils::LogLevel::INFO, "Press Ctrl+C to exit");
+
+    static std::atomic<bool> signal_received{false};
+    std::signal(SIGINT, [](int) {
+      signal_received = true;
+      mc::utils::log(mc::utils::LogLevel::INFO, "SIGINT received");
+    });
+
+    while (!should_stop_ && !signal_received) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
   }
 
-  mc::utils::log(mc::utils::LogLevel::INFO, "Authentication successful");
+  std::atomic<bool> should_stop_;
+  boost::asio::io_context ioc_;
+  std::thread network_thread_;
+  mc::network::NetworkManager networkMgr_;
+};
 
-  // Join server (for session validation)
-  /*if (auth_manager.joinServer("server-hash")) {
-      mc::utils::log(mc::utils::LogLevel::WARN, "Failed to join server for
-  session validation");
-  }*/
+} // namespace mc
 
-  // Create TCP connection to Minecraft server
-  auto connection = tcpHandler->createConnection();
-
-  // Set up connection callbacks
-  connection->setDataCallback([](mc::buffer::ReadBuffer &buffer) {
-    // mc::utils::log(mc::utils::LogLevel::INFO,
-    //"Received " + std::to_string(buffer.data()) + " bytes from server");
-    // TODO: Process Minecraft protocol packets here
-  });
-
-  connection->setErrorCallback([](const boost::system::error_code &error) {
-    mc::utils::log(mc::utils::LogLevel::ERROR,
-                   "TCP connection error: " + error.message());
-  });
-
-  // Connect to Minecraft server
-  mc::utils::log(mc::utils::LogLevel::INFO,
-                 "Connecting to Minecraft server at " +
-                     std::string(SERVER_HOST) + ":" +
-                     std::to_string(SERVER_PORT));
-
-  bool connection_established = false;
-  connection->connect(
-      SERVER_HOST, std::to_string(SERVER_PORT),
-      [&connection_established](const boost::system::error_code &error) {
-        if (error) {
-          mc::utils::log(mc::utils::LogLevel::ERROR,
-                         "Failed to connect to server: " + error.message());
-        } else {
-          mc::utils::log(mc::utils::LogLevel::INFO,
-                         "Successfully connected to Minecraft server");
-          connection_established = true;
-        }
-      });
-
-  // Wait for connection to establish or fail
-  std::this_thread::sleep_for(std::chrono::seconds(2));
-
-  if (connection_established) {
-    mc::utils::log(mc::utils::LogLevel::INFO, "Starting packet reception");
-    connection->startReceiving();
-
-    // TODO: Send handshake packet, login packets, etc.
-    // Example: Send a simple test message
-    std::string test_message = "Hello Minecraft Server!";
-    connection->send(test_message);
-
-    // Keep connection alive for a bit to receive responses
-    mc::utils::log(mc::utils::LogLevel::INFO,
-                   "Maintaining connection for 30 seconds...");
-    std::this_thread::sleep_for(std::chrono::seconds(30));
-
-    mc::utils::log(mc::utils::LogLevel::INFO, "Disconnecting from server");
-    connection->disconnect();
-  } else {
-    mc::utils::log(mc::utils::LogLevel::ERROR,
-                   "Failed to establish connection to server");
-  }
-
-  // Cleanup
-  mc::utils::log(mc::utils::LogLevel::INFO, "Shutting down...");
-  networkMgr.stop();
-  threadMgr.stop();
-
-  return connection_established ? 0 : 1;
+int main() {
+  mc::MinecraftClient client;
+  client.run();
+  return 0;
 }

@@ -30,21 +30,32 @@ void TcpConnection::connect(const std::string &host, const std::string &port,
   boost::asio::ip::tcp::resolver resolver{socket_.get_executor()};
   auto self = shared_from_this();
 
+  mc::utils::log(mc::utils::LogLevel::DEBUG, "Resolving host...");
+
   resolver.async_resolve(
       host, port,
       [this,
        self](const boost::system::error_code &error,
              const boost::asio::ip::tcp::resolver::results_type &endpoints) {
         if (error) {
+          mc::utils::log(mc::utils::LogLevel::ERROR,
+                         "Resolve failed: " + error.message());
           handleConnect(error, connect_callback_);
           return;
         }
 
+        mc::utils::log(mc::utils::LogLevel::DEBUG,
+                       "Host resolved: attempting connect...");
+
         resetTimeout();
+
         boost::asio::async_connect(
             socket_, endpoints,
             [this, self](const boost::system::error_code &error,
-                         const boost::asio::ip::tcp::endpoint &) {
+                         const boost::asio::ip::tcp::endpoint &ep) {
+              mc::utils::log(mc::utils::LogLevel::DEBUG,
+                             "Connect completed to " +
+                                 ep.address().to_string());
               timeout_timer_.cancel();
               handleConnect(error, connect_callback_);
             });

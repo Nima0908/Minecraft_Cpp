@@ -15,13 +15,11 @@ public:
   explicit HttpHandler(boost::asio::io_context &ioc);
   ~HttpHandler() = default;
 
-  // Non-copyable, movable
   HttpHandler(const HttpHandler &) = delete;
   HttpHandler &operator=(const HttpHandler &) = delete;
   HttpHandler(HttpHandler &&) = default;
   HttpHandler &operator=(HttpHandler &&) = default;
 
-  // HTTP methods
   std::string get(const std::string &url, const Headers &headers = {});
   std::string post(const std::string &url, const std::string &body = "",
                    const Headers &headers = {});
@@ -29,7 +27,6 @@ public:
                   const Headers &headers = {});
   std::string del(const std::string &url, const Headers &headers = {});
 
-  // Configuration
   void setTimeout(std::chrono::seconds timeout) { timeout_ = timeout; }
   void setUserAgent(const std::string &userAgent) { userAgent_ = userAgent; }
 
