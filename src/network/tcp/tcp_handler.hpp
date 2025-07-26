@@ -77,6 +77,7 @@ private:
   boost::asio::ip::tcp::socket socket_;
   boost::asio::steady_timer timeout_timer_;
   std::vector<uint8_t> receive_buffer_;
+  boost::asio::ip::tcp::resolver resolver_;
 
   std::atomic<bool> connected_;
   bool keep_alive_;

@@ -10,11 +10,11 @@ using mc::buffer::ByteArray;
 using mc::buffer::ReadBuffer;
 using mc::buffer::WriteBuffer;
 
-// TcpConnection Implementation
 TcpConnection::TcpConnection(boost::asio::io_context &ioc)
-    : socket_(ioc), timeout_timer_(ioc), receive_buffer_(BUFFER_SIZE),
-      connected_(false), keep_alive_(false), timeout_(std::chrono::seconds(30)),
-      encryption_enabled_(false), compression_threshold_(-1) {}
+    : socket_(ioc), timeout_timer_(ioc), resolver_(ioc),
+      receive_buffer_(BUFFER_SIZE), connected_(false), keep_alive_(false),
+      timeout_(std::chrono::seconds(30)), encryption_enabled_(false),
+      compression_threshold_(-1) {}
 
 TcpConnection::~TcpConnection() { disconnect(); }
 
@@ -27,12 +27,13 @@ void TcpConnection::connect(const std::string &host, const std::string &port,
 
   connect_callback_ = std::move(callback);
 
-  boost::asio::ip::tcp::resolver resolver{socket_.get_executor()};
+  resetTimeout();
+
   auto self = shared_from_this();
 
   mc::utils::log(mc::utils::LogLevel::DEBUG, "Resolving host...");
 
-  resolver.async_resolve(
+  resolver_.async_resolve(
       host, port,
       [this,
        self](const boost::system::error_code &error,
@@ -40,6 +41,7 @@ void TcpConnection::connect(const std::string &host, const std::string &port,
         if (error) {
           mc::utils::log(mc::utils::LogLevel::ERROR,
                          "Resolve failed: " + error.message());
+          timeout_timer_.cancel();
           handleConnect(error, connect_callback_);
           return;
         }
@@ -47,15 +49,15 @@ void TcpConnection::connect(const std::string &host, const std::string &port,
         mc::utils::log(mc::utils::LogLevel::DEBUG,
                        "Host resolved: attempting connect...");
 
-        resetTimeout();
-
         boost::asio::async_connect(
             socket_, endpoints,
             [this, self](const boost::system::error_code &error,
                          const boost::asio::ip::tcp::endpoint &ep) {
-              mc::utils::log(mc::utils::LogLevel::DEBUG,
-                             "Connect completed to " +
-                                 ep.address().to_string());
+              if (!error) {
+                mc::utils::log(mc::utils::LogLevel::DEBUG,
+                               "Connect completed to " +
+                                   ep.address().to_string());
+              }
               timeout_timer_.cancel();
               handleConnect(error, connect_callback_);
             });
@@ -68,6 +70,7 @@ void TcpConnection::disconnect() {
 
   connected_ = false;
   timeout_timer_.cancel();
+  resolver_.cancel();
 
   boost::system::error_code ec;
   socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);

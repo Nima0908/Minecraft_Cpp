@@ -4,26 +4,41 @@
 #include <iostream>
 #include <thread>
 
+#include "authenticate/auth_manager.hpp"
+#include "buffer/write_buffer.hpp"
 #include "network/network_manager.hpp"
+#include "protocol/client/handshaking/handshake.hpp"
+#include "protocol/client/status/status_request.hpp"
+#include "util/log_level.hpp"
 #include "util/logger.hpp"
 
 namespace mc {
+
+constexpr const char *CLIENT_ID = "757bb3b3-b7ca-4bcd-a160-c92e6379c263";
+constexpr const char *SERVER_ADDRESS = "localhost";
+constexpr const char *SERVER_IP = "127.0.0.1";
+constexpr const char *SERVER_PORT_STR = "25565";
+constexpr int SERVER_PORT = 25565;
+constexpr int PROTOCOL_VERSION = 770;
+constexpr int LOGIN_STATE = 1;
+constexpr const char *TOKEN_FILE = "tokens.json";
+constexpr const char *USERNAME = "Nima0908";
 
 class MinecraftClient {
 public:
   MinecraftClient() : should_stop_{false} {}
 
   void run() {
-    mc::utils::log(mc::utils::LogLevel::INFO, "MinecraftClient starting...");
+    mc::utils::log(mc::utils::LogLevel::INFO, "Starting MinecraftClient...");
 
     networkMgr_.start(ioc_);
     mc::utils::log(mc::utils::LogLevel::DEBUG, "NetworkManager started");
 
     network_thread_ = std::thread([this]() {
-      mc::utils::log(mc::utils::LogLevel::INFO, "Networking thread started");
+      mc::utils::log(mc::utils::LogLevel::INFO, "Networking thread running");
       try {
         ioc_.run();
-        mc::utils::log(mc::utils::LogLevel::INFO, "IO context finished");
+        mc::utils::log(mc::utils::LogLevel::INFO, "IO context exited normally");
       } catch (const std::exception &e) {
         mc::utils::log(mc::utils::LogLevel::ERROR,
                        std::string("IO context error: ") + e.what());
@@ -31,12 +46,23 @@ public:
     });
 
     auto tcpHandler = networkMgr_.getTcpHandler();
-    if (!tcpHandler) {
-      mc::utils::log(mc::utils::LogLevel::ERROR, "TCP handler not available");
+    auto httpHandler = networkMgr_.getHttpHandler();
+
+    if (!tcpHandler || !httpHandler) {
+      mc::utils::log(mc::utils::LogLevel::ERROR,
+                     "Required handlers not available");
       return;
     }
 
+    mc::auth::AuthManager auth(CLIENT_ID, TOKEN_FILE, httpHandler);
+    auth.authenticate();
+    mc::utils::log(mc::utils::LogLevel::DEBUG, "Authenticated");
+
     auto connection = tcpHandler->createConnection();
+    if (!connection) {
+      mc::utils::log(mc::utils::LogLevel::ERROR, "Failed to create connection");
+      return;
+    }
 
     connection->setErrorCallback([](const boost::system::error_code &ec) {
       mc::utils::log(mc::utils::LogLevel::ERROR,
@@ -48,7 +74,7 @@ public:
     });
 
     connection->connect(
-        "127.0.0.1", "25565",
+        SERVER_IP, SERVER_PORT_STR,
         [connection](const boost::system::error_code &ec) {
           if (ec) {
             mc::utils::log(mc::utils::LogLevel::ERROR,
@@ -56,13 +82,25 @@ public:
             return;
           }
 
-          mc::utils::log(mc::utils::LogLevel::INFO, "Connected!");
+          mc::utils::log(mc::utils::LogLevel::INFO, "Connected to server");
 
           connection->startReceiving();
+
+          mc::buffer::WriteBuffer write;
+          auto handshakePacket =
+              mc::protocol::client::handshaking::HandshakePacket(
+                  PROTOCOL_VERSION, SERVER_ADDRESS, SERVER_PORT, LOGIN_STATE);
+
+          auto statusRequestPacket =
+              mc::protocol::client::status::StatusRequest();
+
+          connection->sendPacket(handshakePacket.serialize(write));
+
+          mc::buffer::WriteBuffer write1;
+          connection->sendPacket(statusRequestPacket.serialize(write1));
         });
 
     waitForExit();
-
     stop();
   }
 
@@ -70,7 +108,7 @@ public:
     if (should_stop_.exchange(true))
       return;
 
-    mc::utils::log(mc::utils::LogLevel::INFO, "Shutting down client");
+    mc::utils::log(mc::utils::LogLevel::INFO, "Shutting down client...");
 
     ioc_.stop();
     if (network_thread_.joinable())
@@ -86,6 +124,7 @@ private:
     mc::utils::log(mc::utils::LogLevel::INFO, "Press Ctrl+C to exit");
 
     static std::atomic<bool> signal_received{false};
+
     std::signal(SIGINT, [](int) {
       signal_received = true;
       mc::utils::log(mc::utils::LogLevel::INFO, "SIGINT received");
