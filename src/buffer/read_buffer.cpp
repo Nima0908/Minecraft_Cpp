@@ -51,6 +51,12 @@ int32_t ReadBuffer::readInt32() {
   return val;
 }
 
+uint8_t ReadBuffer::readUInt8() {
+  if (!ensure(1))
+    throw std::runtime_error("UInt8 read out of bounds");
+  return static_cast<uint8_t>(data_[readPos_++]);
+}
+
 uint16_t ReadBuffer::readUInt16() {
   if (!ensure(2))
     throw std::runtime_error("UInt16 read out of bounds");

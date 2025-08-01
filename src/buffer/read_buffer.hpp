@@ -26,6 +26,7 @@ public:
   bool readBool();
   int16_t readInt16();
   int32_t readInt32();
+  uint8_t readUInt8();
   uint16_t readUInt16();
   uint32_t readUInt32();
   int32_t readVarInt();

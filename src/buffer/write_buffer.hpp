@@ -29,6 +29,7 @@ public:
   void writeInt8(int8_t value);
   void writeInt16(int16_t value);
   void writeInt32(int32_t value);
+  void writeUInt8(uint8_t value);
   void writeUInt16(uint16_t value);
   void writeUInt32(uint32_t value);
   void writeLong(int64_t value);

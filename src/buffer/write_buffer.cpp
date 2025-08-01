@@ -48,6 +48,8 @@ void WriteBuffer::writeInt32(int32_t value) {
   writeBytes(buf);
 }
 
+void WriteBuffer::writeUInt8(uint8_t value) { writeRaw(&value, sizeof(value)); }
+
 void WriteBuffer::writeUInt16(uint16_t value) {
   ByteArray buf = {static_cast<uint8_t>((value >> 8) & 0xFF),
                    static_cast<uint8_t>(value & 0xFF)};
