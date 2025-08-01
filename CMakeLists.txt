@@ -29,6 +29,8 @@ add_compile_options(
     -Wextra
     -Wpedantic
     -Wno-unused-parameter
+    -pipe
+    -O2
 )
 
 # Prefer static or shared libraries
