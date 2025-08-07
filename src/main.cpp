@@ -22,7 +22,7 @@ constexpr int SERVER_PORT = 25565;
 constexpr int PROTOCOL_VERSION = 770;
 constexpr int LOGIN_STATE = 1;
 constexpr const char *TOKEN_FILE = "tokens.json";
-constexpr const char *USERNAME = "Nima0908";
+char *USERNAME;
 
 class MinecraftClient {
 public:
@@ -30,6 +30,9 @@ public:
 
   void run() {
     mc::utils::log(mc::utils::LogLevel::INFO, "Starting MinecraftClient...");
+
+    std::cout << "Username: ";
+    std::cin >> USERNAME;
 
     networkMgr_.start(ioc_);
     mc::utils::log(mc::utils::LogLevel::DEBUG, "NetworkManager started");
