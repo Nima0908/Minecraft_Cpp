@@ -22,7 +22,7 @@ constexpr int SERVER_PORT = 25565;
 constexpr int PROTOCOL_VERSION = 770;
 constexpr int LOGIN_STATE = 1;
 constexpr const char *TOKEN_FILE = "tokens.json";
-char *USERNAME;
+std::string USERNAME;
 
 class MinecraftClient {
 public:
