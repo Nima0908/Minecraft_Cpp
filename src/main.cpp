@@ -178,6 +178,7 @@ private:
         mc::auth::AuthManager auth(CLIENT_ID, TOKEN_FILE, httpHandler);
         auth.authenticate();
         mc::utils::log(mc::utils::LogLevel::DEBUG, "Authenticated");
+        break;
       }
       
       case ConnectionState::Connecting: {
@@ -185,15 +186,16 @@ private:
         if (!connection) {
           mc::utils::log(mc::utils::LogLevel::ERROR, "Failed to create connection");
           return;
+          break;
         }
 
         connection->setErrorCallback([](const boost::system::error_code &ec) {
           mc::utils::log(mc::utils::LogLevel::ERROR,
                          "Connection error: " + ec.message());
         });
-
-        });
-      }
+          break;
+        };
+      
 
       case ConnectionState::Connected: {
         connection->connect(
@@ -213,7 +215,8 @@ private:
                 PROTOCOL_VERSION, SERVER_ADDRESS, SERVER_PORT, LOGIN_STATE);
                 connection->sendPacket(handshakePacket.serialize(write));
           }
-        );
+        ); 
+        break;
       }
 
       case ConnectionState::Ready: {
@@ -228,7 +231,10 @@ private:
           connection->sendPacket(statusRequestPacket.serialize(write1));
 
       }
+     );
+     break;
     }
+   } 
   }
 
   void waitForExit() {
