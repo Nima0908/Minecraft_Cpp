@@ -171,6 +171,7 @@ private:
 
     switch (connection_state_) {
       case ConnectionState::Disconnected: {
+        connection_state_ = ConnectionState::Connecting;
         break;
       }
 
@@ -178,6 +179,8 @@ private:
         mc::auth::AuthManager auth(CLIENT_ID, TOKEN_FILE, httpHandler);
         auth.authenticate();
         mc::utils::log(mc::utils::LogLevel::DEBUG, "Authenticated");
+        
+        connection_state_ = ConnectionState::Connected;
         break;
       }
       
@@ -185,6 +188,8 @@ private:
         auto connection = tcpHandler->createConnection();
         if (!connection) {
           mc::utils::log(mc::utils::LogLevel::ERROR, "Failed to create connection");
+          
+          connection_state_ = ConnectionState::Authenticating;
           return;
           break;
         }
@@ -216,6 +221,7 @@ private:
                 connection->sendPacket(handshakePacket.serialize(write));
           }
         ); 
+        connection_state_ = ConnectionState::Ready;
         break;
       }
 
