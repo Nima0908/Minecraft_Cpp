@@ -1,20 +1,20 @@
 #pragma once
-#include "nbt_tag.hpp"
-#include "tags/nbt_byte.hpp"
-#include "tags/nbt_byte_array.hpp"
-#include "tags/nbt_compound.hpp"
-#include "tags/nbt_double.hpp"
-#include "tags/nbt_end.hpp"
-#include "tags/nbt_float.hpp"
-#include "tags/nbt_int.hpp"
-#include "tags/nbt_int_array.hpp"
-#include "tags/nbt_list.hpp"
-#include "tags/nbt_long.hpp"
-#include "tags/nbt_long_array.hpp"
-#include "tags/nbt_short.hpp"
-#include "tags/nbt_string.hpp"
+#include "../nbt_tag.hpp"
+#include "nbt_byte.hpp"
+#include "nbt_byte_array.hpp"
+#include "nbt_compound.hpp"
+#include "nbt_double.hpp"
+#include "nbt_end.hpp"
+#include "nbt_float.hpp"
+#include "nbt_int.hpp"
+#include "nbt_int_array.hpp"
+#include "nbt_list.hpp"
+#include "nbt_long.hpp"
+#include "nbt_long_array.hpp"
+#include "nbt_short.hpp"
+#include "nbt_string.hpp"
 
-namespace mc::datatypes::nbt {
+namespace mc::datatypes::nbt::tags {
 
 // Factory function to create NBT tags
 inline std::unique_ptr<NBTTag> createTag(NBTTagType type) {
@@ -50,4 +50,4 @@ inline std::unique_ptr<NBTTag> createTag(NBTTagType type) {
   }
 }
 
-} // namespace mc::datatypes::nbt
+} // namespace mc::datatypes::nbt::tags

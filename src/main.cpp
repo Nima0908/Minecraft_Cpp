@@ -1,6 +1,7 @@
 #include <atomic>
 #include <chrono>
 #include <csignal>
+#include <iomanip>
 #include <iostream>
 #include <thread>
 
@@ -9,6 +10,7 @@
 #include "network/network_manager.hpp"
 #include "protocol/client/handshaking/handshake.hpp"
 #include "protocol/client/status/status_request.hpp"
+#include "protocol/server/login/login_disconnect.hpp"
 #include "util/log_level.hpp"
 #include "util/logger.hpp"
 
@@ -20,7 +22,7 @@ constexpr const char *SERVER_IP = "127.0.0.1";
 constexpr const char *SERVER_PORT_STR = "25565";
 constexpr int SERVER_PORT = 25565;
 constexpr int PROTOCOL_VERSION = 770;
-constexpr int LOGIN_STATE = 1;
+constexpr int LOGIN_STATE = 2;
 constexpr const char *TOKEN_FILE = "tokens.json";
 std::string USERNAME;
 
@@ -72,8 +74,26 @@ public:
                      "Connection error: " + ec.message());
     });
 
+    /*connection->setDataCallback([](mc::buffer::ReadBuffer &buffer) {
+      mc::utils::log(mc::utils::LogLevel::INFO, "Data received!");
+      mc::utils::log(mc::utils::LogLevel::DEBUG, buffer.data());
+    });*/
+
     connection->setDataCallback([](mc::buffer::ReadBuffer &buffer) {
       mc::utils::log(mc::utils::LogLevel::INFO, "Data received!");
+
+      const auto &bytes = buffer.data();
+      std::ostringstream oss;
+      for (uint8_t b : bytes) {
+        oss << std::hex << std::setw(2) << std::setfill('0')
+            << static_cast<int>(b) << ' ';
+      }
+
+      mc::utils::log(mc::utils::LogLevel::DEBUG, oss.str());
+      mc::protocol::server::login::LoginDisconnect login_disconnect;
+      login_disconnect.read(buffer);
+      mc::utils::log(mc::utils::LogLevel::DEBUG,
+                     login_disconnect.reason.toString());
     });
 
     connection->connect(

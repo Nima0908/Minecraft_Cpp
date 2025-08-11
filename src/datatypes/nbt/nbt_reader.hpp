@@ -5,7 +5,6 @@
 
 namespace mc::datatypes::nbt {
 
-// Utility classes for reading/writing NBT files
 class NBTReader {
 public:
   static std::pair<std::string, std::unique_ptr<NBTTag>>
@@ -15,7 +14,6 @@ public:
       return {"", std::make_unique<tags::NBTEnd>()};
     }
 
-    // Read string manually for NBT format
     int32_t nameLength = in.readVarInt();
     std::string name;
     if (nameLength > 0) {

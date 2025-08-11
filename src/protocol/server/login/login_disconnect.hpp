@@ -2,15 +2,16 @@
 
 #include "../../../buffer/read_buffer.hpp"
 #include "../../../buffer/write_buffer.hpp"
+#include "../../../datatypes/text_component/text_component.hpp"
 #include "../../packet.hpp"
-#include <string>
+
 #include <vector>
 
 namespace mc::protocol::server::login {
 
 class LoginDisconnect : public Packet {
 public:
-  std::string reason;
+  mc::datatypes::text_component::TextComponent reason;
 
   LoginDisconnect() = default;
 
@@ -24,7 +25,7 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(mc::buffer::ReadBuffer &buf) override { reason = buf.readString(); }
+  void read(mc::buffer::ReadBuffer &buf) override { reason.deserialize(buf); }
 };
 
 } // namespace mc::protocol::server::login
