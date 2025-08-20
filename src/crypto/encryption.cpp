@@ -35,6 +35,8 @@ std::vector<uint8_t> rsaEncrypt(const std::vector<uint8_t> &data,
   if (!bio)
     throw std::runtime_error("BIO_new_mem_buf failed");
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   RSA *rsa = d2i_RSA_PUBKEY_bio(bio, nullptr);
   BIO_free(bio);
   if (!rsa)
@@ -47,6 +49,7 @@ std::vector<uint8_t> rsaEncrypt(const std::vector<uint8_t> &data,
                                   encrypted.data(), rsa, RSA_PKCS1_PADDING);
 
   RSA_free(rsa);
+#pragma GCC diagnostic pop
 
   if (result == -1) {
     mc::utils::log(mc::utils::LogLevel::ERROR, "RSA_public_encrypt failed");
@@ -71,6 +74,8 @@ std::string computeServerHash(const std::string &serverID,
   mc::utils::log(mc::utils::LogLevel::DEBUG,
                  "  Public key length: " + std::to_string(publicKey.size()));
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   SHA_CTX shaCtx;
   SHA1_Init(&shaCtx);
   SHA1_Update(&shaCtx, serverID.data(), serverID.size());
@@ -79,6 +84,7 @@ std::string computeServerHash(const std::string &serverID,
 
   uint8_t digest[SHA_DIGEST_LENGTH];
   SHA1_Final(digest, &shaCtx);
+#pragma GCC diagnostic pop
 
   BIGNUM *num = BN_bin2bn(digest, SHA_DIGEST_LENGTH, nullptr);
   if (!num)

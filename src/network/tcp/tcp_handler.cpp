@@ -11,8 +11,8 @@ using mc::buffer::ReadBuffer;
 using mc::buffer::WriteBuffer;
 
 TcpConnection::TcpConnection(boost::asio::io_context &ioc)
-    : socket_(ioc), timeout_timer_(ioc), resolver_(ioc),
-      receive_buffer_(BUFFER_SIZE), connected_(false), keep_alive_(false),
+    : socket_(ioc), timeout_timer_(ioc), receive_buffer_(BUFFER_SIZE),
+      resolver_(ioc), connected_(false), keep_alive_(false),
       timeout_(std::chrono::seconds(30)), encryption_enabled_(false),
       compression_threshold_(-1) {}
 
@@ -127,10 +127,11 @@ void TcpConnection::sendPacket(const ByteArray &packet_data) {
   try {
     ByteArray compressed = compressIfNeeded(packet_data);
 
-    WriteBuffer buf;
+    WriteBuffer buf(compressed.size() +
+                    16); // Pre-allocate with extra space for VarInt
     buf.writeVarInt(static_cast<int32_t>(compressed.size()));
     buf.writeBytes(compressed);
-    ByteArray compiled = buf.compile();
+    const ByteArray &compiled = buf.data();
 
     ByteArray final_data =
         encryption_enabled_ && cipher_ ? cipher_->encrypt(compiled) : compiled;
@@ -207,7 +208,7 @@ ByteArray TcpConnection::compressIfNeeded(const ByteArray &data) {
     return data;
   }
 
-  WriteBuffer buf;
+  WriteBuffer buf(data.size() + 16); // Pre-allocate with extra space
 
   if (static_cast<int>(data.size()) >= compression_threshold_) {
     ByteArray compressed = mc::utils::compress(data);
@@ -218,7 +219,7 @@ ByteArray TcpConnection::compressIfNeeded(const ByteArray &data) {
     buf.writeBytes(data);
   }
 
-  return buf.compile();
+  return buf.data();
 }
 
 ByteArray TcpConnection::decompressIfNeeded(const ByteArray &data) {

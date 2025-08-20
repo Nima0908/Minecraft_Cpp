@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <vector>
 
@@ -10,11 +11,11 @@ namespace mc::buffer {
 
 class WriteBuffer {
 private:
-  std::vector<ByteArray> segments_;
-  size_t totalSize_ = 0;
+  ByteArray buffer_;
+  size_t capacity_;
 
 public:
-  WriteBuffer();
+  explicit WriteBuffer(size_t initial_capacity = MEDIUM_BUFFER_SIZE);
 
   template <typename T> void write(const T &value);
 
@@ -22,8 +23,11 @@ public:
 
   void writeBytes(const ByteArray &data);
   void writeRaw(const void *data, size_t size);
-  ByteArray compile() const;
+  const ByteArray &data() const { return buffer_; }
+  ByteArray compile() const { return buffer_; }
   void clear();
+  void reserve(size_t size);
+  size_t size() const { return buffer_.size(); }
 
   void writeBool(bool value);
   void writeInt8(int8_t value);
@@ -37,7 +41,16 @@ public:
   void writeDouble(double value);
   void writeVarInt(int32_t value);
   void writeString(const std::string &str);
+  void writeString(std::string_view str);
   void writeByteArray(const ByteArray &bytes);
+
+  // Move semantics for better performance
+  void writeBytes(ByteArray &&data);
+
+  // Bulk operations
+  template <typename Iterator> void writeRange(Iterator begin, Iterator end) {
+    buffer_.insert(buffer_.end(), begin, end);
+  }
 };
 
 template <typename T> void WriteBuffer::write(const T &value) {

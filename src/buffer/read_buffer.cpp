@@ -7,8 +7,8 @@ namespace mc::buffer {
 
 ReadBuffer::ReadBuffer(ByteArray data) : data_(std::move(data)), readPos_(0) {}
 
-bool ReadBuffer::ensure(size_t len) const {
-  return readPos_ + len <= data_.size();
+MC_FORCE_INLINE bool ReadBuffer::ensure(size_t len) const {
+  return MC_LIKELY(readPos_ + len <= data_.size());
 }
 
 ByteArray ReadBuffer::readBytes(size_t len) {
@@ -20,7 +20,7 @@ ByteArray ReadBuffer::readBytes(size_t len) {
 }
 
 uint8_t ReadBuffer::readByte() {
-  if (!ensure(1))
+  if (MC_UNLIKELY(!ensure(1)))
     throw std::runtime_error("Byte read out of bounds");
   return data_[readPos_++];
 }
@@ -44,10 +44,11 @@ int16_t ReadBuffer::readInt16() {
 int32_t ReadBuffer::readInt32() {
   if (!ensure(4))
     throw std::runtime_error("Int32 read out of bounds");
-  int32_t val = 0;
-  for (int i = 0; i < 4; ++i) {
-    val = (val << 8) | data_[readPos_++];
-  }
+  int32_t val = (static_cast<int32_t>(data_[readPos_]) << 24) |
+                (static_cast<int32_t>(data_[readPos_ + 1]) << 16) |
+                (static_cast<int32_t>(data_[readPos_ + 2]) << 8) |
+                static_cast<int32_t>(data_[readPos_ + 3]);
+  readPos_ += 4;
   return val;
 }
 
@@ -68,10 +69,11 @@ uint16_t ReadBuffer::readUInt16() {
 uint32_t ReadBuffer::readUInt32() {
   if (!ensure(4))
     throw std::runtime_error("UInt32 read out of bounds");
-  uint32_t val = 0;
-  for (int i = 0; i < 4; ++i) {
-    val = (val << 8) | data_[readPos_++];
-  }
+  uint32_t val = (static_cast<uint32_t>(data_[readPos_]) << 24) |
+                 (static_cast<uint32_t>(data_[readPos_ + 1]) << 16) |
+                 (static_cast<uint32_t>(data_[readPos_ + 2]) << 8) |
+                 static_cast<uint32_t>(data_[readPos_ + 3]);
+  readPos_ += 4;
   return val;
 }
 
@@ -96,11 +98,15 @@ int64_t ReadBuffer::readLong() {
   if (!ensure(8))
     throw std::runtime_error("Long read out of bounds");
 
-  int64_t value = 0;
-  for (int i = 0; i < 8; ++i) {
-    value <<= 8;
-    value |= static_cast<uint8_t>(data_[readPos_++]);
-  }
+  int64_t value = (static_cast<int64_t>(data_[readPos_]) << 56) |
+                  (static_cast<int64_t>(data_[readPos_ + 1]) << 48) |
+                  (static_cast<int64_t>(data_[readPos_ + 2]) << 40) |
+                  (static_cast<int64_t>(data_[readPos_ + 3]) << 32) |
+                  (static_cast<int64_t>(data_[readPos_ + 4]) << 24) |
+                  (static_cast<int64_t>(data_[readPos_ + 5]) << 16) |
+                  (static_cast<int64_t>(data_[readPos_ + 6]) << 8) |
+                  static_cast<int64_t>(data_[readPos_ + 7]);
+  readPos_ += 8;
   return value;
 }
 

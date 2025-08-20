@@ -18,7 +18,7 @@ public:
   HttpHandler(const HttpHandler &) = delete;
   HttpHandler &operator=(const HttpHandler &) = delete;
   HttpHandler(HttpHandler &&) = default;
-  HttpHandler &operator=(HttpHandler &&) = default;
+  HttpHandler &operator=(HttpHandler &&) = delete;
 
   std::string get(const std::string &url, const Headers &headers = {});
   std::string post(const std::string &url, const std::string &body = "",

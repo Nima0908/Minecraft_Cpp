@@ -1,4 +1,5 @@
 #pragma once
+#include "../util/performance_hints.hpp"
 #include "types.hpp"
 #include <cstddef>
 #include <cstring>
@@ -19,7 +20,7 @@ public:
 
   template <typename T> T read();
 
-  bool ensure(size_t len) const;
+  MC_FORCE_INLINE bool ensure(size_t len) const;
   ByteArray readBytes(size_t len);
   uint8_t readByte();
   int8_t readInt8();

@@ -109,7 +109,8 @@ public:
 
           connection->startReceiving();
 
-          mc::buffer::WriteBuffer write;
+          // Pre-allocate buffers for better performance
+          mc::buffer::WriteBuffer write(mc::buffer::MEDIUM_BUFFER_SIZE);
           auto handshakePacket =
               mc::protocol::client::handshaking::HandshakePacket(
                   PROTOCOL_VERSION, SERVER_ADDRESS, SERVER_PORT, LOGIN_STATE);
@@ -119,8 +120,8 @@ public:
 
           connection->sendPacket(handshakePacket.serialize(write));
 
-          mc::buffer::WriteBuffer write1;
-          connection->sendPacket(statusRequestPacket.serialize(write1));
+          write.clear();
+          connection->sendPacket(statusRequestPacket.serialize(write));
         });
 
     waitForExit();
