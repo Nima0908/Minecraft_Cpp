@@ -25,7 +25,7 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(mc::buffer::ReadBuffer &buf) override { reason.deserialize(buf); }
+  void read(mc::buffer::ReadBuffer &buf) override { reason = buf.readString(); }
 };
 
 } // namespace mc::protocol::server::configuration

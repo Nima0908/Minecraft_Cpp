@@ -93,7 +93,7 @@ public:
       mc::protocol::server::login::LoginDisconnect login_disconnect;
       login_disconnect.read(buffer);
       mc::utils::log(mc::utils::LogLevel::DEBUG,
-                     login_disconnect.reason.toString());
+                     login_disconnect.reason);
     });
 
     connection->connect(

@@ -11,7 +11,7 @@ namespace mc::protocol::server::login {
 
 class LoginDisconnect : public Packet {
 public:
-  mc::datatypes::text_component::TextComponent reason;
+  /*mc::datatypes::text_component::TextComponent*/ std::string reason;
 
   LoginDisconnect() = default;
 
@@ -25,7 +25,7 @@ public:
     return PacketDirection::Clientbound;
   }
 
-  void read(mc::buffer::ReadBuffer &buf) override { reason.deserialize(buf); }
+  void read(mc::buffer::ReadBuffer &buf) override { reason = buf.readString(); }
 };
 
 } // namespace mc::protocol::server::login
