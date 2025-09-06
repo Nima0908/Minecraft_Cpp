@@ -21,7 +21,6 @@ if(NOT CMAKE_C_COMPILER OR NOT CMAKE_CXX_COMPILER)
 endif()
 
 # Use mold as the linker
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=mold")
 
 # Custom compile flags
 add_compile_options(

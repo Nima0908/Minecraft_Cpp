@@ -1,0 +1,3 @@
+/home/drs239/Git-Projs/Minecraft_Cpp/CMakeFiles/mc_client.dir
+/home/drs239/Git-Projs/Minecraft_Cpp/CMakeFiles/edit_cache.dir
+/home/drs239/Git-Projs/Minecraft_Cpp/CMakeFiles/rebuild_cache.dir
