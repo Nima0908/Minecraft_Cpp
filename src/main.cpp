@@ -1,4 +1,3 @@
-
 #include <atomic>
 #include <chrono>
 #include <csignal>
@@ -54,33 +53,13 @@ public:
 
     if (!tcpHandler || !httpHandler) {
       mc::utils::log(mc::utils::LogLevel::ERROR,
-                     "Required handlers not available");
+                     "Required handlers not available -main.cpp");
       return;
     }
 
-    mc::auth::AuthManager auth(CLIENT_ID, TOKEN_FILE, httpHandler);
-    auth.authenticate();
-    mc::utils::log(mc::utils::LogLevel::DEBUG, "Authenticated");
 
-    connection = tcpHandler->createConnection();
-    if (!connection) {
-      mc::utils::log(mc::utils::LogLevel::ERROR, "Failed to create connection");
-      return;
-    }
+    tickbase::runTickProcess(tcpHandler, httpHandler);
 
-    connection->setErrorCallback([](const boost::system::error_code &ec) {
-      mc::utils::log(mc::utils::LogLevel::ERROR,
-                     "Connection error: " + ec.message());
-    });
-
-    connection->setDataCallback([](mc::buffer::ReadBuffer &buffer) {
-      mc::utils::log(mc::utils::LogLevel::INFO, "Data received!");
-    });
-
-    connection_state_ = ConnectionState::Ready;
-
-    
-    tickbase::runTickProcess();
     waitForExit();
     stop();
   }
@@ -116,13 +95,12 @@ private:
     }
   }
 
-  ConnectionState connection_state_;
+  ConnectionState connection_state_;  
   std::atomic<bool> should_stop_;
   boost::asio::io_context ioc_;
   std::thread network_thread_;
   mc::network::NetworkManager networkMgr_;
 
-  std::shared_ptr<mc::network::tcp::TcpConnection> connection;
 };
 
 } // namespace mc

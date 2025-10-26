@@ -20,7 +20,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/type_traits \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/atomic_wait.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cstdint \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdint.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdint.h \
   /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
   /usr/include/bits/types.h /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h /usr/include/bits/wchar.h \
@@ -31,9 +31,9 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/x86_64-pc-linux-gnu/bits/gthr.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/pthread.h /usr/include/sched.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stddef.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_size_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_null.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stddef.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_size_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_null.h \
   /usr/include/bits/types/time_t.h \
   /usr/include/bits/types/struct_timespec.h /usr/include/bits/endian.h \
   /usr/include/bits/endianness.h /usr/include/bits/sched.h \
@@ -69,7 +69,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
   /usr/include/bits/types/error_t.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/climits \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/limits.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/limits.h \
   /usr/include/limits.h /usr/include/bits/posix1_lim.h \
   /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
   /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
@@ -104,9 +104,9 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cwchar \
   /usr/include/wchar.h /usr/include/bits/floatn.h \
   /usr/include/bits/floatn-common.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_wchar_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdarg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_wchar_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdarg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___gnuc_va_list.h \
   /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
   /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
   /usr/include/bits/types/FILE.h /usr/include/bits/wchar2-decl.h \
@@ -114,11 +114,11 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/exception \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/exception_ptr.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/cxxabi_init_exception.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_ptrdiff_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_nullptr_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_max_align_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_offsetof.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_nullptr_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_max_align_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_offsetof.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/typeinfo \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/nested_exception.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/char_traits.h \
@@ -348,7 +348,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/memory \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/stl_raw_storage_iter.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/shared_ptr_atomic.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/sanitizer/tsan_interface.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/sanitizer/tsan_interface.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/ranges_uninitialized.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/out_ptr.h \
@@ -1152,11 +1152,11 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/include/x86_64-pc-linux-gnu/openssl/configuration.h \
   /usr/include/openssl/opensslv.h /usr/include/openssl/bio.h \
   /usr/include/openssl/e_os2.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_list.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_arg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___va_copy.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_arg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_copy.h \
   /usr/include/openssl/crypto.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/stdlib.h \
   /usr/include/openssl/safestack.h /usr/include/openssl/stack.h \
@@ -1859,14 +1859,14 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/include/boost/json/detail/charconv/from_chars.hpp \
   /usr/include/boost/json/detail/charconv/detail/config.hpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cfloat \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/float.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/float.h \
   /usr/include/boost/json/detail/charconv/detail/from_chars_result.hpp \
   /usr/include/boost/json/detail/charconv/chars_format.hpp \
   /usr/include/boost/json/detail/sse2.hpp \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/emmintrin.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/xmmintrin.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/mmintrin.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/mm_malloc.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/emmintrin.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/xmmintrin.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/mmintrin.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/mm_malloc.h \
   /usr/include/boost/json/parser.hpp \
   /usr/include/boost/json/detail/handler.hpp \
   /usr/include/boost/json/value_stack.hpp \
@@ -1887,13 +1887,12 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /usr/include/boost/json/detail/value_to.hpp \
   /usr/include/boost/json/visit.hpp \
   /usr/include/boost/json/impl/visit.hpp \
-  /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../buffer/write_buffer.hpp \
+  /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../buffer/read_buffer.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../buffer/types.hpp \
-  /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/network_manager.hpp \
+  /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../buffer/write_buffer.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/http/http_handler.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/tcp/tcp_handler.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/tcp/../../buffer/read_buffer.hpp \
-  /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/tcp/../../buffer/types.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/gamelogic/../network/tcp/../../crypto/aes_cipher.hpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/deque \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/stl_deque.h \
@@ -1911,6 +1910,7 @@ CMakeFiles/mc_client.dir/src/main.cpp.o: \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/authenticate/auth_manager.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/buffer/write_buffer.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/network/network_manager.hpp \
+  /home/drs239/Git-Projs/Minecraft_Cpp/src/network/http/http_handler.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/network/tcp/tcp_handler.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/protocol/client/status/status_request.hpp \
   /home/drs239/Git-Projs/Minecraft_Cpp/src/util/log_level.hpp \

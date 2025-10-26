@@ -13,7 +13,7 @@ CMakeFiles/mc_client.dir/src/buffer/write_buffer.cpp.o: \
   /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/x86_64-pc-linux-gnu/bits/cpu_defines.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/pstl/pstl_config.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdint.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdint.h \
   /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
   /usr/include/bits/types.h /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h /usr/include/bits/wchar.h \
@@ -28,12 +28,12 @@ CMakeFiles/mc_client.dir/src/buffer/write_buffer.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cwchar \
   /usr/include/wchar.h /usr/include/bits/floatn.h \
   /usr/include/bits/floatn-common.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stddef.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_size_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_wchar_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_null.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdarg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stddef.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_size_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_wchar_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_null.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdarg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___gnuc_va_list.h \
   /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
   /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
   /usr/include/bits/types/FILE.h /usr/include/bits/types/locale_t.h \
@@ -135,11 +135,11 @@ CMakeFiles/mc_client.dir/src/buffer/write_buffer.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/basic_string.tcc \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/memory_resource.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cstddef \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_ptrdiff_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_nullptr_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_max_align_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_offsetof.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_nullptr_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_max_align_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_offsetof.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/uses_allocator.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/uses_allocator_args.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/tuple \

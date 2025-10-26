@@ -8,21 +8,21 @@ CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: \
   /usr/include/openssl/configuration.h \
   /usr/include/x86_64-pc-linux-gnu/openssl/configuration.h \
   /usr/include/openssl/opensslv.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdarg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___gnuc_va_list.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_list.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_arg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___va_copy.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdarg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_arg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_copy.h \
   /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
   /usr/include/features.h /usr/include/features-time64.h \
   /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
   /usr/include/sys/cdefs.h /usr/include/bits/long-double.h \
   /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stddef.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_size_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_null.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stddef.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_size_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_null.h \
   /usr/include/bits/types.h /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h /usr/include/bits/types/__fpos_t.h \
   /usr/include/bits/types/__mbstate_t.h \
@@ -33,7 +33,7 @@ CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: \
   /usr/include/bits/floatn-common.h /usr/include/bits/stdio2-decl.h \
   /usr/include/bits/stdio.h /usr/include/bits/stdio2.h \
   /usr/include/openssl/types.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/limits.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/limits.h \
   /usr/include/limits.h /usr/include/bits/posix1_lim.h \
   /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
   /usr/include/bits/pthread_stack_min-dynamic.h \
@@ -54,17 +54,17 @@ CMakeFiles/mc_client.dir/src/crypto/aes_cipher.cpp.o: \
   /usr/include/bits/pthreadtypes-arch.h \
   /usr/include/bits/atomic_wide_counter.h \
   /usr/include/bits/struct_mutex.h /usr/include/bits/struct_rwlock.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdint.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdint.h \
   /usr/include/stdint.h /usr/include/bits/wchar.h \
   /usr/include/bits/stdint-uintn.h /usr/include/bits/stdint-least.h \
   /usr/include/openssl/safestack.h /usr/include/openssl/stack.h \
   /usr/include/openssl/core.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_ptrdiff_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_wchar_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_nullptr_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_max_align_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_offsetof.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_wchar_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_nullptr_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_max_align_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_offsetof.h \
   /usr/include/openssl/core_dispatch.h /usr/include/openssl/indicator.h \
   /usr/include/openssl/params.h /usr/include/openssl/bn.h \
   /usr/include/openssl/crypto.h \

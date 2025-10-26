@@ -9,7 +9,7 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
   /usr/include/boost/config/detail/select_compiler_config.hpp \
   /usr/include/boost/config/compiler/clang.hpp \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdint.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdint.h \
   /usr/include/boost/config/compiler/clang_version.hpp \
   /usr/include/boost/config/detail/select_stdlib_config.hpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/version \
@@ -26,9 +26,9 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
   /usr/include/bits/types.h /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stddef.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_size_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_null.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stddef.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_size_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_null.h \
   /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
   /usr/include/bits/getopt_core.h /usr/include/bits/unistd.h \
   /usr/include/bits/unistd-decl.h /usr/include/bits/unistd_ext.h \
@@ -40,7 +40,7 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/include/boost/config/platform/linux.hpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cstdlib \
   /usr/include/stdlib.h /usr/include/bits/libc-header-start.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_wchar_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_wchar_t.h \
   /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
   /usr/include/bits/floatn.h /usr/include/bits/floatn-common.h \
   /usr/include/bits/types/locale_t.h \
@@ -156,7 +156,7 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
   /usr/include/bits/types/error_t.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/climits \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/limits.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/limits.h \
   /usr/include/limits.h /usr/include/bits/posix1_lim.h \
   /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
   /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
@@ -168,11 +168,11 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/std_mutex.h \
   /usr/include/boost/asio/detail/cstddef.hpp \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cstddef \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_ptrdiff_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_nullptr_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_max_align_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_offsetof.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_nullptr_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_max_align_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_offsetof.h \
   /usr/include/boost/asio/detail/executor_function.hpp \
   /usr/include/boost/asio/detail/handler_alloc_helpers.hpp \
   /usr/include/boost/asio/detail/memory.hpp \
@@ -219,8 +219,8 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/postypes.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cwchar \
   /usr/include/wchar.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdarg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdarg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___gnuc_va_list.h \
   /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
   /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
   /usr/include/bits/types/FILE.h /usr/include/bits/wchar2-decl.h \
@@ -291,7 +291,7 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/ext/aligned_buffer.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/ext/concurrence.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/shared_ptr_atomic.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/sanitizer/tsan_interface.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/sanitizer/tsan_interface.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/ranges_uninitialized.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/out_ptr.h \
@@ -1144,11 +1144,11 @@ CMakeFiles/mc_client.dir/src/network/http/http_handler.cpp.o: \
   /usr/include/x86_64-pc-linux-gnu/openssl/configuration.h \
   /usr/include/openssl/opensslv.h /usr/include/openssl/bio.h \
   /usr/include/openssl/e_os2.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_list.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_arg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___va_copy.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_arg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_copy.h \
   /usr/include/openssl/crypto.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/stdlib.h \
   /usr/include/openssl/safestack.h /usr/include/openssl/stack.h \

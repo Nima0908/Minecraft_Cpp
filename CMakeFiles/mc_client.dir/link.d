@@ -12,6 +12,7 @@ mc_client: \
   CMakeFiles/mc_client.dir/src/network/network_manager.cpp.o \
   CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o \
   CMakeFiles/mc_client.dir/src/util/compression_util.cpp.o \
+  CMakeFiles/mc_client.dir/src/util/factory_registry.cpp.o \
   /usr/lib64/libboost_system.so.1.88.0 \
   /usr/lib64/libboost_json.so.1.88.0 \
   /usr/lib64/libssl.so \
@@ -71,6 +72,8 @@ CMakeFiles/mc_client.dir/src/network/network_manager.cpp.o:
 CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o:
 
 CMakeFiles/mc_client.dir/src/util/compression_util.cpp.o:
+
+CMakeFiles/mc_client.dir/src/util/factory_registry.cpp.o:
 
 /usr/lib64/libboost_system.so.1.88.0:
 

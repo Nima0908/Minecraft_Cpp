@@ -14,7 +14,7 @@ CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o: \
   /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/x86_64-pc-linux-gnu/bits/cpu_defines.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/pstl/pstl_config.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdint.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdint.h \
   /usr/include/stdint.h /usr/include/bits/libc-header-start.h \
   /usr/include/bits/types.h /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h /usr/include/bits/wchar.h \
@@ -29,12 +29,12 @@ CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cwchar \
   /usr/include/wchar.h /usr/include/bits/floatn.h \
   /usr/include/bits/floatn-common.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stddef.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_size_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_wchar_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_null.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/stdarg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___gnuc_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stddef.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_size_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_wchar_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_null.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/stdarg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___gnuc_va_list.h \
   /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
   /usr/include/bits/types/__mbstate_t.h /usr/include/bits/types/__FILE.h \
   /usr/include/bits/types/FILE.h /usr/include/bits/types/locale_t.h \
@@ -136,11 +136,11 @@ CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/basic_string.tcc \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/memory_resource.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/cstddef \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_ptrdiff_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_nullptr_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_max_align_t.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stddef_offsetof.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_nullptr_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_max_align_t.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stddef_offsetof.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/uses_allocator.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/uses_allocator_args.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/tuple \
@@ -166,13 +166,13 @@ CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o: \
   /usr/include/openssl/configuration.h \
   /usr/include/x86_64-pc-linux-gnu/openssl/configuration.h \
   /usr/include/openssl/opensslv.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_header_macro.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_list.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_arg.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg___va_copy.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/__stdarg_va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_header_macro.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_list.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_arg.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg___va_copy.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/__stdarg_va_copy.h \
   /usr/include/openssl/types.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/limits.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/limits.h \
   /usr/include/limits.h /usr/include/bits/posix1_lim.h \
   /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
   /usr/include/bits/pthread_stack_min-dynamic.h \
@@ -326,7 +326,7 @@ CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/ext/aligned_buffer.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/ext/concurrence.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/shared_ptr_atomic.h \
-  /usr/lib/llvm/20/bin/../../../../lib/clang/20/include/sanitizer/tsan_interface.h \
+  /usr/lib/llvm/21/bin/../../../../lib/clang/21/include/sanitizer/tsan_interface.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/ranges_uninitialized.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15/include/g++-v15/bits/out_ptr.h \

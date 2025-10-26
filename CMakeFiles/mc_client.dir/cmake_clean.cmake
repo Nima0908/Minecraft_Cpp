@@ -20,6 +20,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mc_client.dir/src/network/tcp/tcp_handler.cpp.o.d"
   "CMakeFiles/mc_client.dir/src/util/compression_util.cpp.o"
   "CMakeFiles/mc_client.dir/src/util/compression_util.cpp.o.d"
+  "CMakeFiles/mc_client.dir/src/util/factory_registry.cpp.o"
+  "CMakeFiles/mc_client.dir/src/util/factory_registry.cpp.o.d"
   "mc_client"
   "mc_client.pdb"
 )
